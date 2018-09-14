@@ -4,20 +4,20 @@
 //
 // Copyright (C)       2011 Douglas Bates, Martin Maechler and Ben Bolker
 //
-// This file is part of lme4.
+// This file is part of lmeAddSigma.
 
 #ifndef LME4_CHOLMODDECOMPOSITION_H
 #define LME4_CHOLMODDECOMPOSITION_H
 
 #include <RcppEigen.h>
 
-namespace lme4 {
+namespace lmeAddSigma {
 
     /* A wrapper around Eigen's CholmodDecomposition class that provides some extra
-       functionality and member access required by lme4.
+       functionality and member access required by lmeAddSigma.
     */
     template<typename _MatrixType, int _UpLo = Eigen::Lower>
-    class lme4CholmodDecomposition : public Eigen::CholmodDecomposition<_MatrixType, _UpLo> {
+    class lmeAddSigmaCholmodDecomposition : public Eigen::CholmodDecomposition<_MatrixType, _UpLo> {
       protected:
         typedef Eigen::CholmodDecomposition<_MatrixType, _UpLo> Base;
         using Base::m_factorizationIsOk;
@@ -25,7 +25,7 @@ namespace lme4 {
 
       public:
         cholmod_common& cholmod() const {
-            return const_cast<lme4CholmodDecomposition<_MatrixType, _UpLo>*>(this)->Base::cholmod();
+            return const_cast<lmeAddSigmaCholmodDecomposition<_MatrixType, _UpLo>*>(this)->Base::cholmod();
         }
 
         cholmod_factor* factor() const { return Base::m_cholmodFactor; }
@@ -36,7 +36,7 @@ namespace lme4 {
             eigen_assert(m_analysisIsOk && "You must first call analyzePattern()");
             cholmod_sparse    A = 
                 // **SKIP square test because we only call this function
-                //   in lme4 when we want to treat the input as a rectangular
+                //   in lmeAddSigma when we want to treat the input as a rectangular
                 //   matrix
                 // (!forceRectangularmatrix.rows() == matrix.cols()) ?
                 // viewAsCholmod(matrix.template selfadjointView<_UpLo>()) :
@@ -72,7 +72,7 @@ namespace lme4 {
     };
 
     template<typename T>
-    SEXP Eigen_cholmod_wrap(const lme4CholmodDecomposition<Eigen::SparseMatrix<T> >& obj) {
+    SEXP Eigen_cholmod_wrap(const lmeAddSigmaCholmodDecomposition<Eigen::SparseMatrix<T> >& obj) {
         typedef T* Tpt;
         const cholmod_factor* f = obj.factor();
         if (f->minor < f->n)
@@ -107,13 +107,13 @@ namespace lme4 {
         return ::Rcpp::wrap(ans);
     }
 
-} // namespace lme4
+} // namespace lmeAddSigma
 
 namespace Rcpp {
 
     template<typename T>
-    SEXP wrap(const lme4::lme4CholmodDecomposition<Eigen::SparseMatrix<T> >& obj) {
-        return ::lme4::Eigen_cholmod_wrap(obj);
+    SEXP wrap(const lmeAddSigma::lmeAddSigmaCholmodDecomposition<Eigen::SparseMatrix<T> >& obj) {
+        return ::lmeAddSigma::Eigen_cholmod_wrap(obj);
     }
 
 } // namespace Rcpp
