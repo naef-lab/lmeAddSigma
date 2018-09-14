@@ -52,10 +52,11 @@ merPredD <-
 		     sigma0  = "numeric"),
                 methods = list(
                      initialize = function(X, Zt, Lambdat, Lind, theta,
-                                           n, sigma=sigma0, # = sample size, usually = nrow(X)
+                                           n, sigma0, # = sample size, usually = nrow(X)
                                            ...) {
                          if (!nargs()) return()
                          ll <- list(...)
+			 sigma0 <<- sigma0  # JY/FN 2018-09-14
                          X <<- as(X, "matrix")
                          Zt <<- as(Zt, "dgCMatrix")
                          Lambdat <<- as(Lambdat, "dgCMatrix")
@@ -67,8 +68,6 @@ merPredD <-
                          stopifnot(length(theta) > 0L,
                                    length(Lind) > 0L,
                                    all(sort(unique(Lind)) == seq_along(theta)))
-			 print("JY: Sigma0:")
-			 print(sigma0)
                          RZX <<- if (!is.null(ll$RZX))
                              array(ll$RZX, c(q, p)) else array(0, c(q, p))
                          Utr <<- if (!is.null(ll$Utr))

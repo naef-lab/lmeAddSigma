@@ -878,9 +878,9 @@ checkArgs <- function(type,...) {
             l... <- l...[names(l...) != "method"]
         }
         if(length(l...)) {
-            warning("extra argument(s) ",
+            print(paste("extra argument(s) ",
                     paste(sQuote(names(l...)), collapse=", "),
-                    " disregarded",call.=FALSE)
+                    " disregarded",call.=FALSE))
         }
     }
 }

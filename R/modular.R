@@ -501,8 +501,14 @@ mkLmerDevfun <- function(fr, X, reTrms, REML = TRUE, start = NULL,
     ## pull necessary arguments for making the model frame out of ...
     p <- ncol(X) # maybe also do rank check on X here??
     rho <- new.env(parent=parent.env(environment()))
+    # print("JY what is this")
+    # print(c(reTrms[c("Zt", "theta", "Lambdat", "Lind")], n=nrow(X), list(X=X, sigma0=sigma0)))
     rho$pp <- do.call(merPredD$new, c(reTrms[c("Zt","theta","Lambdat","Lind")],
-                                      n=nrow(X), sigma0=sigma0, list(X=X)))
+                                      n=nrow(X), list(X=X, sigma0=sigma0)))
+    # print(paste("JY X from rho"))
+    # print(rho$pp$X)
+    # print(paste("JY sigma from rho", rho$pp$sigma0))
+    # print(paste("Set sigma0 to new sigma0", rho$pp$sigma0))
     REMLpass <- if(REML) p else 0L
     rho$resp <-
         if(missing(fr))
@@ -558,7 +564,7 @@ optimizeLmer <- function(devfun,
                          control = list(),
                          ...) {
     verbose <- as.integer(verbose)
-    rho <- environment(devfun)
+    rho <- environment(devfun)  # rho$pp contains sigma0 JY/FN 2018-09-14
     opt <- optwrap(optimizer,
                    devfun,
                    getStart(start,rho$lower,rho$pp),

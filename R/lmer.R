@@ -34,9 +34,12 @@ lmer <- function(formula, data=NULL, REML = TRUE,
     lmod$formula <- NULL
 
     ## create deviance function for covariance parameters (theta)
+    # sigma0 goes inside environment(devfun)  JY/FN 2018-09-14
     devfun <- do.call(mkLmerDevfun,
                       c(lmod,
-                        list(start=start, verbose=verbose, control=control)))
+                        list(start=start, verbose=verbose, control=control, sigma0=sigma0)))
+    print("JY my devfun")
+    print(devfun)
     if (devFunOnly) return(devfun)
     ## optimize deviance function over covariance parameters
     if (identical(control$optimizer,"none"))
