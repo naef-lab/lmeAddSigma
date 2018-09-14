@@ -48,10 +48,11 @@ merPredD <-
                      delb    = "numeric",
                      delu    = "numeric",
                      theta   = "numeric", # numeric vector of variance component parameters
-                     u0      = "numeric"),
+                     u0      = "numeric",
+		     sigma0  = "numeric"),
                 methods = list(
                      initialize = function(X, Zt, Lambdat, Lind, theta,
-                                           n, # = sample size, usually = nrow(X)
+                                           n, sigma=sigma0, # = sample size, usually = nrow(X)
                                            ...) {
                          if (!nargs()) return()
                          ll <- list(...)
@@ -66,6 +67,8 @@ merPredD <-
                          stopifnot(length(theta) > 0L,
                                    length(Lind) > 0L,
                                    all(sort(unique(Lind)) == seq_along(theta)))
+			 print("JY: Sigma0:")
+			 print(sigma0)
                          RZX <<- if (!is.null(ll$RZX))
                              array(ll$RZX, c(q, p)) else array(0, c(q, p))
                          Utr <<- if (!is.null(ll$Utr))

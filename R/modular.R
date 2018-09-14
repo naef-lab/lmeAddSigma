@@ -492,7 +492,7 @@ updateStart <- function(start,theta) {
 ##' \cr
 ##' @export
 mkLmerDevfun <- function(fr, X, reTrms, REML = TRUE, start = NULL,
-                         verbose = 0, control = lmerControl(), ...)
+                         verbose = 0, control = lmerControl(), sigma0=0, ...)
 {
     ## FIXME: make sure verbose gets handled properly
     #if (missing(fr)) {
@@ -502,7 +502,7 @@ mkLmerDevfun <- function(fr, X, reTrms, REML = TRUE, start = NULL,
     p <- ncol(X) # maybe also do rank check on X here??
     rho <- new.env(parent=parent.env(environment()))
     rho$pp <- do.call(merPredD$new, c(reTrms[c("Zt","theta","Lambdat","Lind")],
-                                      n=nrow(X), list(X=X)))
+                                      n=nrow(X), sigma0=sigma0, list(X=X)))
     REMLpass <- if(REML) p else 0L
     rho$resp <-
         if(missing(fr))

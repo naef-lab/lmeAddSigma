@@ -5,7 +5,7 @@
 lmer <- function(formula, data=NULL, REML = TRUE,
                  control = lmerControl(), start = NULL,
                  verbose = 0L, subset, weights, na.action, offset,
-                 contrasts = NULL, devFunOnly=FALSE,
+                 contrasts = NULL, devFunOnly=FALSE, sigma0=0,
                  ...)
 {
     mc <- mcout <- match.call()
