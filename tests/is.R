@@ -1,4 +1,4 @@
-library(lme4)
+library(lmeAddSigma)
 fm1 <- lmer(Reaction ~ Days + (Days|Subject), sleepstudy)
 stopifnot(isREML(fm1),
           isLMM(fm1),

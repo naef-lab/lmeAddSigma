@@ -1,6 +1,6 @@
-## testing whether lme4 and nlme play nicely.  Only known issue
+## testing whether lmeAddSigma and nlme play nicely.  Only known issue
 ## is lmList-masking ...
-library("lme4")
+library("lmeAddSigma")
 library("nlme")
 fm1_lmer <- lmer(Reaction ~ Days + (Days|Subject), sleepstudy)
 fm1_lme <- lme(Reaction ~ Days, random=~Days|Subject, sleepstudy)
@@ -19,6 +19,6 @@ stopifnot(all.equal(unname(unlist(unclass(ranef(fm1_lmer)))),
 
 fm1L_lme <- nlme::lmList(distance ~ age | Subject, Orthodont)
 ## FIXME: lmList not working yet?
-## fm1L_lmer <- lme4::lmList(distance ~ age | Subject, Orthodont)
+## fm1L_lmer <- lmeAddSigma::lmList(distance ~ age | Subject, Orthodont)
 
 ## FIXME: test opposite order

@@ -1,5 +1,5 @@
 library("testthat")
-library("lme4")
+library("lmeAddSigma")
 context("specifying starting values")
 
 ## is "Nelder_Mead" default optimizer?

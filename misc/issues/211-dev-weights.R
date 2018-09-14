@@ -6,7 +6,7 @@
 ##-----------------------------------------------------------------------
 
 ## Now with weights {started from scratch; so self-contained}:
-library(lme4)
+library(lmeAddSigma)
 fm <- lmer(Reaction ~ Days + (Days | Subject), sleepstudy)
 set.seed(1)
 w <- runif(nrow(sleepstudy))

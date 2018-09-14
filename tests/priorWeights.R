@@ -18,7 +18,7 @@ compFunc <- function(lmeMod, lmerMod, tol = 1e-2){
 
     lmerVarCorr <- c(sapply(vcLmer, attr, "stddev"),
                      attr(VarCorr(lmerMod), "sc"))
-    ## differentiate lme4{new} and lme4.0 :
+    ## differentiate lmeAddSigma{new} and lmeAddSigma.0 :
     lmerCoef <- if(is(lmerMod, "merMod"))
 	summary(lmerMod)$coefficients else summary(lmerMod)@coefs
     lmerOut <- c(lmerVarCorr, as.numeric(lmerCoef))
@@ -65,7 +65,7 @@ lmeMods <- list(
     ML1   = lme(y ~ x+z, random = ~ x+z|g, weights = varFixed(~v), method = "ML"),
     REML2 = lme(y ~ x+z, random = ~ x+z|g, weights = varFixed(~v), method = "REML"))
 
-library("lme4")
+library("lmeAddSigma")
 lmerMods <- list(
     ML1 =   lmer(y ~ x +  (1|g),      weights = w, REML = FALSE),
     REML1 = lmer(y ~ x +  (1|g),      weights = w, REML = TRUE),
@@ -119,11 +119,11 @@ y <- Z%*%rnorm(ncol(Z)) + x + rnorm(n)/w^.5
 m <- lmer(y ~ x + (1|g), weights=w, REML = TRUE)
 
 ## CRAN-forbidden:
-## has4.0 <- require("lme4.0"))
+## has4.0 <- require("lmeAddSigma.0"))
 has4.0 <- FALSE
 if(has4.0) {
-    ## m.0 <- lme4.0::lmer(y ~ x + (1|g), weights=w, REML = TRUE)
-    lmer0 <- get("lmer", envir=asNamespace("lme4.0"))
+    ## m.0 <- lmeAddSigma.0::lmer(y ~ x + (1|g), weights=w, REML = TRUE)
+    lmer0 <- get("lmer", envir=asNamespace("lmeAddSigma.0"))
     m.0 <- lmer0(y ~ x + (1|g), weights=w, REML = TRUE)
     dput(fixef(m.0)) # c(-0.73065400610675, 2.02895402562926)
     dput(sigma(m.0)) # 1.73614301673377
@@ -131,20 +131,20 @@ if(has4.0) {
     dput(unname(coef(summary(m.0))[,"Std. Error"]))
     ## c(0.95070076853232, 1.37650858268602)
 }
-fixef_lme4.0 <- c(-0.7306540061, 2.0289540256)
-sigma_lme4.0 <- 1.7361430
-Sigma_lme4.0 <- 2.3567045
-SE_lme4.0 <- c(0.95070077, 1.37650858)
-if(has4.0) try(detach("package:lme4.0"))
+fixef_lmeAddSigma.0 <- c(-0.7306540061, 2.0289540256)
+sigma_lmeAddSigma.0 <- 1.7361430
+Sigma_lmeAddSigma.0 <- 2.3567045
+SE_lmeAddSigma.0 <- c(0.95070077, 1.37650858)
+if(has4.0) try(detach("package:lmeAddSigma.0"))
 
-stopifnot(all.equal(unname(fixef(m)), fixef_lme4.0, tolerance = 1e-3))
-          all.equal(unname(fixef(m)), fixef_lme4.0, tolerance = 0) #-> 1.657e-5
+stopifnot(all.equal(unname(fixef(m)), fixef_lmeAddSigma.0, tolerance = 1e-3))
+          all.equal(unname(fixef(m)), fixef_lmeAddSigma.0, tolerance = 0) #-> 1.657e-5
 
 ## but these are not at all equal :
-(all.equal(sigma(m),                		sigma_lme4.0, tolerance = 10^-3)) # 0.4276
-(all.equal(as.vector(VarCorr(m)$g), 		Sigma_lme4.0, tolerance = 10^-3)) # 1.038
-(all.equal(as.vector(summary(m)$coefficients[,2]), SE_lme4.0, tolerance = 10^-3)) # 0.4276
-## so, lme4.0 was clearly wrong here
+(all.equal(sigma(m),                		sigma_lmeAddSigma.0, tolerance = 10^-3)) # 0.4276
+(all.equal(as.vector(VarCorr(m)$g), 		Sigma_lmeAddSigma.0, tolerance = 10^-3)) # 1.038
+(all.equal(as.vector(summary(m)$coefficients[,2]), SE_lmeAddSigma.0, tolerance = 10^-3)) # 0.4276
+## so, lmeAddSigma.0 was clearly wrong here
 
 
 ##' make sure models that differ only in a constant

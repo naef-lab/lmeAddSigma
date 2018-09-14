@@ -8,7 +8,7 @@
 // Original implementation Copyright (C) 2007-2011 Massachusetts Institute of Technology
 // Modifications Copyright (C) 2011 Douglas Bates, Martin Maechler and Ben Bolker
 //
-// This file is part of lme4.
+// This file is part of lmeAddSigma.
 
 #include "optimizer.h"
 

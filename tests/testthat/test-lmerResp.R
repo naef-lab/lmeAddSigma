@@ -1,7 +1,7 @@
-library("lme4")
+library("lmeAddSigma")
 library("testthat")
 
-data(Dyestuff, package="lme4")
+data(Dyestuff, package="lmeAddSigma")
 n     <- nrow(Dyestuff)
 ones  <- rep.int(1, n)
 zeros <- rep.int(0, n)

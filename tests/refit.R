@@ -1,7 +1,7 @@
 #### Testing  refit()
 #### ----------------
 
-library(lme4)
+library(lmeAddSigma)
 set.seed(101)
 
 ## for each type of model, should be able to
@@ -20,7 +20,7 @@ dropterms <- function(x) {
 }
 
 if (getRversion() >= "3.0.0") {
-    attach(system.file("testdata", "lme-tst-fits.rda", package="lme4"))
+    attach(system.file("testdata", "lme-tst-fits.rda", package="lmeAddSigma"))
 } else {
     ## saved fits are not safe with old R versions; just re-compute ("cheat"!):
 
@@ -140,7 +140,7 @@ if (requireNamespace("mlmRev")) {
     cat("gm3S: refit(*, sim.()):\n"); print(getinfo(gm3S))
 
     data(Mmmec, package="mlmRev")
-    if (lme4:::testLevel() > 1) {
+    if (lmeAddSigma:::testLevel() > 1) {
         gm4 <- glmer(deaths ~ uvb + (1|region), data=Mmmec,
                      family = poisson,
                      offset = log(expected))

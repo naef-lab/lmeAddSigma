@@ -1,4 +1,4 @@
-stopifnot(require("testthat"), require("lme4"))
+stopifnot(require("testthat"), require("lmeAddSigma"))
 
 context("NA (and Inf) handling")
 

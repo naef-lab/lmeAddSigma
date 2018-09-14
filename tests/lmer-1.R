@@ -1,5 +1,5 @@
 ### suppressPackageStartupMessages(...)  as we have an *.Rout.save to Rdiff against
-stopifnot(suppressPackageStartupMessages(require(lme4)))
+stopifnot(suppressPackageStartupMessages(require(lmeAddSigma)))
 options(show.signif.stars = FALSE, useFancyQuotes=FALSE)
 
 source(system.file("test-tools-1.R", package = "Matrix"))# identical3() etc
@@ -294,7 +294,7 @@ showProc.time() #
 
 
 ## example from Kevin Thorpe: synthesized equivalent
-## http://thread.gmane.org/gmane.comp.lang.r.lme4.devel/9835
+## http://thread.gmane.org/gmane.comp.lang.r.lmeAddSigma.devel/9835
 
 ## NA issue: simpler example
 d <- data.frame(y=1:60,f=factor(rep(1:6,each=10)))

@@ -4,7 +4,7 @@
 ## ?model.frame
 ## ????
 
-data(sleepstudy,package="lme4")
+data(sleepstudy,package="lmeAddSigma")
 library(splines)
 
 ## lm0 <- lm(Reaction~ns(Days,2),sleepstudy)
@@ -15,7 +15,7 @@ library(splines)
 ## attr(lme1$terms,"predvars")   ## yes
 ## detach("package:nlme")
 
-library(lme4)
+library(lmeAddSigma)
 fm1 <- lmer(Reaction ~ ns(Days,2) + (1|Subject), sleepstudy)
 fm2 <- lmer(Reaction ~ poly(Days,2) + (1|Subject), sleepstudy)
 fm3 <- lmer(Reaction ~ poly(Days,2,raw=TRUE) + (1|Subject), sleepstudy)

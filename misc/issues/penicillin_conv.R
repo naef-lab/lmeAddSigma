@@ -2,7 +2,7 @@
 ## run -- the runs were done separately and stitched together --
 ## so it's possible there are some inconsistencies in naming etc.
 ## across runs with different optimizers (hopefully not)
-library("lme4")
+library("lmeAddSigma")
 library("gridExtra")
 
 batchfn <- "penicillin_conv.RData"

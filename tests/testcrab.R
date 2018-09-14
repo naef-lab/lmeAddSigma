@@ -1,5 +1,5 @@
-library("lme4")
-L <- load(system.file("testdata","crabs_randdata2.Rda",package="lme4"))
+library("lmeAddSigma")
+L <- load(system.file("testdata","crabs_randdata2.Rda",package="lmeAddSigma"))
 ## randdata0: simulated data, in form suitable for plotting
 ## randdata: simulated data, in form suitable for analysis
 
@@ -8,7 +8,7 @@ L <- load(system.file("testdata","crabs_randdata2.Rda",package="lme4"))
 
 ## FIXME: there are still bigger differences than I'd like between the approaches
 ## (mostly in the random-effects correlation).  It's not clear who's right;
-## lme4 thinks its parameters are better, but ??  Could be explored further.
+## lmeAddSigma thinks its parameters are better, but ??  Could be explored further.
 
 if (FALSE) {
 ## library(ggplot2)  ## commented to avoid triggering Suggests: requirement
@@ -36,8 +36,8 @@ stopifnot(all.equal(res1,res1B))
 dfun <- update(glmer1,devFunOnly=TRUE)
 stopifnot(all.equal(dfun(p1),c(-2*logLik(glmer1))))
 ##
-## library(lme4.0)  ## version 0.999999.2 results
-## t1_lme4.0 <- system.time(glmer1X <-
+## library(lmeAddSigma.0)  ## version 0.999999.2 results
+## t1_lmeAddSigma.0 <- system.time(glmer1X <-
 ##                           glmer(fr2,weights=initial.snail.density,
 ##                                 family ="binomial", data=randdata))
 ## dput(c(fixef(glmer1X),c(VarCorr(glmer1X)$plot)))
@@ -51,7 +51,7 @@ stopifnot(all.equal(unname(p1),p1X,tolerance=0.03))
 dfun(p1X)
 dfun(p1)
 ## ~ 1.8 seconds elapsed time
-lme4.0_res <- 
+lmeAddSigma.0_res <- 
     structure(c(2.77730476938968, 0.609023583738824, -1.60055813739844, 
                 2.0324468778545, 0.624173873057839, -1.7908793509579, -2.44540201631615, 
                 -1.42365990002708, -2.26780929006268, 0.700928084600075, -1.26220238391029, 
@@ -65,7 +65,7 @@ lme4.0_res <-
           "crab.speciesS:crab.sizeS:snail.sizeS", 
           "crab.speciesS:crab.sizeM:snail.sizeS", "", "", "", ""))
 
-stopifnot(all.equal(res1,lme4.0_res,tolerance=0.015))
+stopifnot(all.equal(res1,lmeAddSigma.0_res,tolerance=0.015))
 
 
 ## library("glmmADMB")

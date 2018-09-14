@@ -5,19 +5,19 @@ options(repos=c(CRAN="http://probability.ca/cran",
         bioc="http://www.bioconductor.org/packages/release/bioc"))
 
 source("pkgdepfuns.R")    ## define functions
-rr <- getDepends("lme4")  ## download dependency structure from CRAN
-pkgnotes <- read.csv("lme4_notes.csv")  ## 
-testresults <- doPkgDeptests("lme4",verbose=TRUE,do_parallel=FALSE)
-save("testresults",file="lme4tests_out.RData")
+rr <- getDepends("lmeAddSigma")  ## download dependency structure from CRAN
+pkgnotes <- read.csv("lmeAddSigma_notes.csv")  ## 
+testresults <- doPkgDeptests("lmeAddSigma",verbose=TRUE,do_parallel=FALSE)
+save("testresults",file="lmeAddSigmatests_out.RData")
 genReport(rr,testresults,extra.info=pkgnotes)
 
 ###
 
 if (FALSE) {
     ## playing with results
-    L <- load("lme4tests_out.RData")
-    rr <- getDepends("lme4")
-    xx <- read.csv("lme4_notes.csv")
+    L <- load("lmeAddSigmatests_out.RData")
+    rr <- getDepends("lmeAddSigma")
+    xx <- read.csv("lmeAddSigma_notes.csv")
     genReport(rr,testresults,extra=xx)
     checkPkg("HSAUR2")
     checkPkg("car",checkdir="check")

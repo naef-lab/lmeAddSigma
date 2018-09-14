@@ -1,4 +1,4 @@
-library("lme4")
+library("lmeAddSigma")
 library("testthat")
 
 context("testing '||' notation for independent ranefs")

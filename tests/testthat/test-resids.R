@@ -1,5 +1,5 @@
 library("testthat")
-library("lme4")
+library("lmeAddSigma")
 context("residuals")
 test_that("lmer", {
     fm1 <- lmer(Reaction ~ Days + (Days|Subject),sleepstudy)

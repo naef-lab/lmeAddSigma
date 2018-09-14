@@ -1,4 +1,4 @@
-library(lme4)
+library(lmeAddSigma)
 library(optimx)
 library(glmmTMB)
 
@@ -40,7 +40,7 @@ t1 <- system.time({
     devfun2 <- function(theta) {
         return(devfun(c(theta,1000)))
     }
-    m1 <- lme4:::optwrap("nloptwrap",fn=devfun2,par=1,lower=0,
+    m1 <- lmeAddSigma:::optwrap("nloptwrap",fn=devfun2,par=1,lower=0,
                          control=list(),adj=FALSE,verbose=3,
                          calc.derivs=FALSE)
     ## 4.  Update the deviance function for optimizing over theta and beta:
@@ -51,7 +51,7 @@ t1 <- system.time({
     }
     nbeta <- sum(environment(devfun)$lower==-Inf)
     ## turn off calc_derivs??
-    m2 <- lme4:::optwrap("nloptwrap",fn=devfun3,
+    m2 <- lmeAddSigma:::optwrap("nloptwrap",fn=devfun3,
                          par=c(m1$par,1000,rep(0,nbeta)),
                          lower=c(0,rep(-Inf,nbeta)),
                          control=list(),adj=TRUE,verbose=3,

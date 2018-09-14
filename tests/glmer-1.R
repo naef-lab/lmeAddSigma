@@ -1,5 +1,5 @@
 ## generalized linear mixed model
-stopifnot(suppressPackageStartupMessages(require(lme4)))
+stopifnot(suppressPackageStartupMessages(require(lmeAddSigma)))
 options(show.signif.stars = FALSE)
 
 source(system.file("test-tools-1.R", package = "Matrix"), keep.source = FALSE)
@@ -75,7 +75,7 @@ m2 <- glmer(cbind(incidence, size - incidence) ~ period + (1 | herd),
 stopifnot(is((cm2 <- coef(m2)), "coef.mer"),
 	  dim(cm2$herd) == c(15,4),
 	  all.equal(fixef(m2),
-### lme4a [from an Ubuntu 11.10 amd64 system]
+### lmeAddSigmaa [from an Ubuntu 11.10 amd64 system]
                     c(-1.39922533406847, -0.991407294757321,
                       -1.12782184600404, -1.57946627431248),
                     ##c(-1.3766013, -1.0058773,
@@ -89,7 +89,7 @@ stopifnot(is((cm2 <- coef(m2)), "coef.mer"),
           )
 
 ## 32-bit Ubuntu 10.04:
-coef_m1_lme4.0 <- structure(c(-1.39853505102576,
+coef_m1_lmeAddSigma.0 <- structure(c(-1.39853505102576,
                          -0.992334712470269, -1.12867541092127,
                          -1.58037389566025),
                        .Names = c("(Intercept)", "period2", "period3",
@@ -110,7 +110,7 @@ coef_m1_glmmML <- structure(c(-1.39853234657711, -0.992336901732793, -1.12867036
 -1.58030977686564), .Names = c("(Intercept)", "period2", "period3",
 "period4"))
 
-## lme4[r 1636], 64-bit ubuntu 11.10:
+## lmeAddSigma[r 1636], 64-bit ubuntu 11.10:
 ## c(-1.3788385, -1.0589543,
 ##                      -1.1936382, -1.6306271),
 
@@ -119,7 +119,7 @@ stopifnot(is((cm1 <- coef(m1b)), "coef.mer"),
           all.equal(fixef(m1b),fixef(m1),tolerance=4e-5),
 	  is.all.equal4(fixef(m1b),
                         coef_m1_glmmadmb,
-                        coef_m1_lme4.0,
+                        coef_m1_lmeAddSigma.0,
                         coef_m1_glmmML,
 		    tol = 5e-4)
 	  )
@@ -219,7 +219,7 @@ stopifnot(all.equal(a01$Chisq[2], 554.334056, tolerance=1e-5),
           a01$ Df == 3:4,
 	  a01$`Chi Df`[2] == 1)
 
-if(lme4:::testLevel() > 1) {
+if(lmeAddSigma:::testLevel() > 1) {
     nsim <- 10
     set.seed(2)
     system.time(

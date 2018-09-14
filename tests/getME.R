@@ -1,4 +1,4 @@
-library(lme4)
+library(lmeAddSigma)
 #### tests of getME()
 
 ###  are names correct? --------------
@@ -29,7 +29,7 @@ getME(fm4 <- lmer(Reaction ~ Days + (1|Subject) + (0+Days|Subject), sleepstudy),
       "theta")
 
 ## internal consistency check ensuring that all allowed 'name's work (and are not empty):
-(nmME <- eval(formals(lme4:::getME.merMod)$name))
+(nmME <- eval(formals(lmeAddSigma:::getME.merMod)$name))
 chkMEs <- function(fm, nms) {
     stopifnot(is.character(nms))
     str(parts <- sapply(nms, getME, object = fm, simplify=FALSE))

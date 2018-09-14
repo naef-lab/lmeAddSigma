@@ -1,5 +1,5 @@
 
-library(lme4)
+library(lmeAddSigma)
 ## source("./F01_predict_funcs.R")
 
 ## private data: request access from Alex Whitworth for debugging purposes
@@ -8,7 +8,7 @@ library(lme4)
 
 ## __but__ missing  'dat' which was the data used to *fit*  'mod1'.
 ##
-## ==> not lme4-reproducible from data
+## ==> not lmeAddSigma-reproducible from data
 mod1
 ## From looking at the above
 ## using the data from the above load(..)
@@ -144,7 +144,7 @@ m1 <- lm(y~f*x,data=d)
 coef(m1)
 ## f3:x is NA
 
-library("lme4")
+library("lmeAddSigma")
 m2 <- lmer(y~f*x+(1|g),d)
 predict(m2,re.form=~1|g)
 predict(m2)

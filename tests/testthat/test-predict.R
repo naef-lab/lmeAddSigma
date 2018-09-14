@@ -1,12 +1,12 @@
 
 library("testthat")
-library("lme4")
+library("lmeAddSigma")
 library("lattice")
 
 do.plots <- TRUE
 
 L <- load(system.file("testdata/lme-tst-fits.rda",
-                      package="lme4", mustWork=TRUE))
+                      package="lmeAddSigma", mustWork=TRUE))
 
 if (getRversion() > "3.0.0") {
     ## saved fits are not safe with old R versions

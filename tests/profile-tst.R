@@ -1,10 +1,10 @@
-library(lme4)
+library(lmeAddSigma)
 library(testthat)
 library(lattice)
 
 ### __ was ./profile_plots.R ___
 fm1 <- lmer(Reaction~ Days + (Days|Subject), sleepstudy)
-pfile <- system.file("testdata","tprfm1.RData", package="lme4")
+pfile <- system.file("testdata","tprfm1.RData", package="lmeAddSigma")
 if(file.exists(pfile)) print(load(pfile)) else {
  system.time( tpr.fm1 <- profile(fm1, optimizer="Nelder_Mead") )  ## 20 seconds
  save(tpr.fm1, file= "../../inst/testdata/tprfm1.RData")
@@ -39,7 +39,7 @@ invisible(lapply(wlist,function(w) xyplot(profile(fm01ML,which=w))))
 
 (confint(tpr) -> CIpr)
 print(xyplot(tpr))
-##  comparing against lme4a reference values -- but lme4 returns sigma
+##  comparing against lmeAddSigmaa reference values -- but lmeAddSigma returns sigma
 ## rather than log(sigma)
 stopifnot(dim(CIpr) == c(3,2),
           all.equal(unname(CIpr[".sigma",]),exp(c(3.64362, 4.21446)), tolerance=1e-6),
@@ -53,7 +53,7 @@ fm <- lmer(strength ~ 1 + (cask | batch), data=Pastes)
 pfm <- profile(fm, which = "beta_", alphamax=.001)
 xyplot(pfm)
 
-(testLevel <- lme4:::testLevel())
+(testLevel <- lmeAddSigma:::testLevel())
 if(testLevel > 2) {
 
     ## 2D profiles
@@ -61,14 +61,14 @@ if(testLevel > 2) {
     system.time(pr2 <- profile(fm2ML)) # 5.2 sec, 2018-05: 2.1"
     (confint(pr2) -> CIpr2)
 
-    lme4a_CIpr2 <-
+    lmeAddSigmaa_CIpr2 <-
         structure(c(0.633565787613112, 1.09578224011285, -0.721864513060904,
                     21.2666273835452, 1.1821039843372, 3.55631937954106, -0.462903300019305,
                     24.6778176174587), .Dim = c(4L, 2L), .Dimnames = list(c(".sig01",
                            ".sig02", ".lsig", "(Intercept)"), c("2.5 %", "97.5 %")))
-    lme4a_CIpr2[".lsig",] <- exp(lme4a_CIpr2[".lsig",])
+    lmeAddSigmaa_CIpr2[".lsig",] <- exp(lmeAddSigmaa_CIpr2[".lsig",])
 
-    stopifnot(all.equal(unname(CIpr2),unname(lme4a_CIpr2),tolerance=1e-6))
+    stopifnot(all.equal(unname(CIpr2),unname(lmeAddSigmaa_CIpr2),tolerance=1e-6))
 
     print(xyplot(pr2, absVal=0, aspect=1.3, layout=c(4,1)))
     print(splom(pr2))
@@ -89,7 +89,7 @@ if(testLevel > 2) {
     if (FALSE) {
         ## not working yet: detecting (slightly) lower deviance; not converging in 10k
         pr5 <- profile(nm1,which=1,verbose=1,maxmult=1.2)
-        xyplot(.zeta~.focal|.par,type=c("l","p"),data=lme4:::as.data.frame.thpr(pr5),
+        xyplot(.zeta~.focal|.par,type=c("l","p"),data=lmeAddSigma:::as.data.frame.thpr(pr5),
                scale=list(x=list(relation="free")),
                as.table=TRUE)
     }

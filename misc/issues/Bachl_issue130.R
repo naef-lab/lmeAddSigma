@@ -21,14 +21,14 @@ stopifnot(all(-50:50 == with(d3, sort(unique(rtr2)))))
 d3[, "id.trn"] <- with(d3, droplevels(idnr:turnid))
 str(d3)
 
-library(lme4.0)
+library(lmeAddSigma.0)
 t0 <- system.time(m0 <- lmer(rtr2 ~ turnsec + (turnsec | id.trn) +
                              (turnsec | turnid) + (turnsec | idnr),
                              verbose = TRUE, d3))
 outf <- "Bachl_out.RData"
 save(list=ls(pattern="^[mt]"),file=outf)
-detach("package:lme4.0")
-library("lme4")
+detach("package:lmeAddSigma.0")
+library("lmeAddSigma")
 t1 <- system.time(m1 <- lmer(rtr2 ~ turnsec + (turnsec | id.trn) +
                              (turnsec | turnid) + (turnsec | idnr),
                              verbose = TRUE, d3))
@@ -64,10 +64,10 @@ outf <- "Bachl_out.RData" # <- (repeated from above)
 if(!(file.exists(outf) && "t4" %in% load(outf))  && !interactive())
     q("no")
 
-source(system.file("testdata/lme-tst-funs.R", package="lme4", mustWork=TRUE))
+source(system.file("testdata/lme-tst-funs.R", package="lmeAddSigma", mustWork=TRUE))
 ##-> gimME(), allcoefs() ..
 
-nms.m <- c("lme4.0",
+nms.m <- c("lmeAddSigma.0",
            "i..NM",  "mq.byq", # "mq." : from 'minqa'  package
            "nl.byq", "nl.NM")  # "nl." : from 'nloptr'
 tim <- rbind(t0, t1,t2,t3,t4)[, 1:3]
@@ -75,7 +75,7 @@ rownames(tim) <- nms.m
 
 round(tim, 1)
 ##        user.self sys.self elapsed
-## lme4.0     302.7      9.3   313.5  <-- lme4.0 clearly fastest
+## lmeAddSigma.0     302.7      9.3   313.5  <-- lmeAddSigma.0 clearly fastest
 ## i..NM      734.7      1.4   739.7
 ## mq.byq    1155.3      3.0  1164.2
 ## nl.byq     540.3     27.3   570.5
@@ -83,7 +83,7 @@ round(tim, 1)
 
 mods <- setNames(lapply(ls(patt="^m[0-9]"), get), nms.m)
 sapply(mods, object.size)
-##    lme4.0    i..NM   mq.byq   nl.byq    nl.NM
+##    lmeAddSigma.0    i..NM   mq.byq   nl.byq    nl.NM
 ## 34'267160  6471536  6471848  6471600  6472336
 
 lapply(mods, getCall)# just to verify our  nms.m  are ok
@@ -91,9 +91,9 @@ lapply(mods, getCall)# just to verify our  nms.m  are ok
 ## Optimizer convergence ok:
 stopifnot(0 == sapply(lapply(mods[-1], slot, "optinfo"),
           function(.) .$conv$opt))
-## lme4 convergence checks, all are *not* ok {but NM seem worse}
+## lmeAddSigma convergence checks, all are *not* ok {but NM seem worse}
 cbind(sapply(lapply(mods[-1], slot, "optinfo"),
-             function(.) .$conv$lme4$message[1]))
+             function(.) .$conv$lmeAddSigma$message[1]))
 
 smods <- lapply(mods, summary)
 if(FALSE)## much output:
@@ -107,7 +107,7 @@ sb.b <- t(sapply(mods, allcoef.t))
 ## Look at the distances
 D <- dist(th.b)
 round(D, 2)
-##        lme4.0 i..NM mq.byq nl.byq
+##        lmeAddSigma.0 i..NM mq.byq nl.byq
 ## i..NM    1.95
 ## mq.byq   0.02  1.95
 ## nl.byq   0.02  1.95   0.00
@@ -115,14 +115,14 @@ round(D, 2)
 
 ## or, similar
 round(100* dist(sb.b))
-##        lme4.0 i..NM mq.byq nl.byq
+##        lmeAddSigma.0 i..NM mq.byq nl.byq
 ## i..NM     796
 ## mq.byq      2   797
 ## nl.byq      2   797      0
 ## nl.NM     920   405    920    920
 
 ## ===> Summary:
-## lme4.0 gives practically *the same*  as the two bobyqa()s which
+## lmeAddSigma.0 gives practically *the same*  as the two bobyqa()s which
 ## are even closer to each other;
 ## The Nelder-Meads are quite different, and only partly close to each other
 

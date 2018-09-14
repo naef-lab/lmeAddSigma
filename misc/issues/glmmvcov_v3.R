@@ -1,6 +1,6 @@
-## my (RHC) installation of gitHub lme4:
-##library(lme4, lib.loc="/Users/rhbc/Documents/Misc/tmp_Rlibs/")
-library(lme4)
+## my (RHC) installation of gitHub lmeAddSigma:
+##library(lmeAddSigma, lib.loc="/Users/rhbc/Documents/Misc/tmp_Rlibs/")
+library(lmeAddSigma)
 ## install.packages("ordinal", repos="http://R-Forge.R-project.org")
 stopifnot(require(ordinal))
 ## Get example data:

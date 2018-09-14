@@ -121,9 +121,9 @@ bootMer <- function(x, FUN, nsim = 1, seed = NULL,
         } else if (have_snow) {
             if (is.null(cl)) {
                 cl <- parallel::makePSOCKcluster(rep("localhost", ncpus))
-                ## explicit export of the lme4 namespace since most FUNs will probably
+                ## explicit export of the lmeAddSigma namespace since most FUNs will probably
                 ## use some of them
-                parallel::clusterExport(cl, varlist=getNamespaceExports("lme4"))
+                parallel::clusterExport(cl, varlist=getNamespaceExports("lmeAddSigma"))
                 if(RNGkind()[1L] == "L'Ecuyer-CMRG")
                     parallel::clusterSetRNGStream(cl)
                 res <- parallel::parLapply(cl, simvec, ffun)

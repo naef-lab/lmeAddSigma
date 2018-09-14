@@ -1,5 +1,5 @@
 library("testthat")
-library("lme4")
+library("lmeAddSigma")
 
 context("summarizing/printing models")
 test_that("lmer", {

@@ -1,5 +1,5 @@
 library("testthat")
-library("lme4")
+library("lmeAddSigma")
 
 context("glmer.nb")
 test_that("basic", {

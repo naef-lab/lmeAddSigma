@@ -1,7 +1,7 @@
-#### Saved fits for lme4 testing
+#### Saved fits for lmeAddSigma testing
 ####  ----------------------------------
 fn <- system.file("testdata", (fn0 <- "lme-tst-fits.rda"),
-                  package="lme4", mustWork=TRUE)
+                  package="lmeAddSigma", mustWork=TRUE)
 
 run_Pix_prof <- FALSE
 
@@ -9,8 +9,8 @@ if(FALSE) ### "Load" these by  load(fn)
     ## or "better"
     attach(fn)
 
-library(lme4)
-str(packageDescription("lme4")[c("Version", "Packaged", "Built")])
+library(lmeAddSigma)
+str(packageDescription("lmeAddSigma")[c("Version", "Packaged", "Built")])
 
 ## intercept only in both fixed and random effects
 fit_sleepstudy_0 <- lmer(Reaction ~ 1 + (1|Subject), sleepstudy)

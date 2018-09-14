@@ -1,4 +1,4 @@
-library("lme4")
+library("lmeAddSigma")
 
 ## tests of a variety of GLMM families and links
 ## coding: family {g=Gamma, P=Poisson, G=Gaussian, B=binomial}
@@ -68,14 +68,14 @@ gm3B <- glmer(y ~ x + (1|block), d, Gamma)
 ##
 ## library(hglm)
 ## h1 <- hglm2(y~x+(1|block), data=d, family=Gamma())
-## lme4.0 fails on all of these ...
+## lmeAddSigma.0 fails on all of these ...
 
 ## Gamma/log
 ggl1 <- glmer(y ~ 1 + (1|block), data=dgl, family=Gamma(link="log"))
 ggl2 <- glmer(y ~ x + (1|block), data=dgl, family=Gamma(link="log"))
 
 ##
-## library(lme4.0)
+## library(lmeAddSigma.0)
 ## ggl1 <- glmer(y ~ 1 + (1|block), data=dgl, family=Gamma(link="log"), verbose= 2)
 ## fails
 
@@ -87,7 +87,7 @@ gP2 <- glmer(y ~ x + (1|block), data=dP, family=poisson)
 gG1 <- glmer(y ~ 1 + (1|block), data=dG, family=gaussian(link="log"))
 gG2 <- glmer(y ~ x + (1|block), data=dG, family=gaussian(link="log"))
 
-## works with lme4.0 but AIC/BIC/logLik are crazy, and scale
+## works with lmeAddSigma.0 but AIC/BIC/logLik are crazy, and scale
 ## parameter is not reported
 ## glmmML etc. doesn't allow models with scale parameters
 ## gG1B <- glmmadmb(y ~ 1 + (1|block), data=dG,

@@ -1,7 +1,7 @@
-### https://github.com/lme4/lme4/issues/287
+### https://github.com/lmeAddSigma/lmeAddSigma/issues/287
 ### ------------------------------------###
 
-## I recently switched to using the development version of lme4 (1.1-8) and have run into problems with models fit using `glmer.nb` (which I know is experimental).
+## I recently switched to using the development version of lmeAddSigma (1.1-8) and have run into problems with models fit using `glmer.nb` (which I know is experimental).
 
 ## I'm using an example from the `glmmadmb` help page to illustrate what I've been experiencing.
 
@@ -14,9 +14,9 @@ library(glmmADMB)
 ##      ^^^^^^^^^  not on CRAN, (but R-forge, see above)
 packageVersion("glmmADMB")
 
-# Load development version of lme4
-library(lme4) ## library(lme4, lib.loc = "C:/Program Files/R/Packages")
-packageVersion("lme4")
+# Load development version of lmeAddSigma
+library(lmeAddSigma) ## library(lmeAddSigma, lib.loc = "C:/Program Files/R/Packages")
+packageVersion("lmeAddSigma")
 ## [1] ‘1.1.9’ (<- now)
 fit4 <- glmer.nb(y ~ Base*trt + Age + Visit + (1|subject), data = epil2)
 ## --> warnings: failed to converge

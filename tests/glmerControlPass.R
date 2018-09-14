@@ -1,10 +1,10 @@
 ## test redirection from lmer to glmer (correct options passed,
 ##   specifically glmerControl -> tolPwrss
 
-library("lme4")
+library("lmeAddSigma")
 library("testthat")
 ## data("trees513", package = "multcomp")
-load(system.file("testdata","trees513.RData",package="lme4"))
+load(system.file("testdata","trees513.RData",package="lmeAddSigma"))
 
 expect_is(mmod1 <- glmer(damage ~ species - 1 + (1 | lattice / plot),
    data = trees513B, family = binomial()),"glmerMod")

@@ -1,4 +1,4 @@
-library(lme4)
+library(lmeAddSigma)
 fmVA <- glmer(r2 ~ (Anger + Gender + btype + situ)^2 +
               (1|id) + (1|item), family = binomial, data =
               VerbAgg)

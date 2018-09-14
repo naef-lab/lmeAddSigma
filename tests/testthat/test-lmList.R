@@ -1,4 +1,4 @@
-library(lme4)
+library(lmeAddSigma)
 library(testthat)
 
 context("lmList")
@@ -89,7 +89,7 @@ test_that("cbpp", {
         summary(fm4)
 
         library(nlme)
-        data("cbpp",package="lme4")
+        data("cbpp",package="lmeAddSigma")
         fm6 <- nlme::lmList(incidence ~ period | herd, data=cbpp)
         try(coef(fm6))  ## coef does *not* work here
         try(summary(fm6))
@@ -135,19 +135,19 @@ test_that("NA,weights,offsets", {
 test_that("pooled",
 {
     ## GH #26
-    fm_lme4 <- lme4:::lmList(Reaction ~ Days | Subject, sleepstudy)
+    fm_lmeAddSigma <- lmeAddSigma:::lmList(Reaction ~ Days | Subject, sleepstudy)
     fm_nlme <- nlme:::lmList(Reaction ~ Days | Subject, sleepstudy)
     fm_nlme_nopool <- nlme:::lmList(Reaction ~ Days | Subject, sleepstudy, pool=FALSE)
-    ci_lme4_pooled <- confint(fm_lme4,pool=TRUE) #get low and high CI estimates and pooled sd
+    ci_lmeAddSigma_pooled <- confint(fm_lmeAddSigma,pool=TRUE) #get low and high CI estimates and pooled sd
     ci_nlme_pooled <- nlme:::intervals(fm_nlme,pool=TRUE)
-    expect_equal(unname(ci_lme4_pooled[,,1]),unname(ci_nlme_pooled[,c(1,3),1]))
-    ci_lme4_nopool1 <- confint(fm_lme4,pool=FALSE)
-    ci_lme4_nopool2 <- confint(fm_lme4)
-    expect_identical(ci_lme4_nopool1,ci_lme4_nopool2)
+    expect_equal(unname(ci_lmeAddSigma_pooled[,,1]),unname(ci_nlme_pooled[,c(1,3),1]))
+    ci_lmeAddSigma_nopool1 <- confint(fm_lmeAddSigma,pool=FALSE)
+    ci_lmeAddSigma_nopool2 <- confint(fm_lmeAddSigma)
+    expect_identical(ci_lmeAddSigma_nopool1,ci_lmeAddSigma_nopool2)
     ## BUG in nlme::intervals ... ? can't get CIs on unpooled fits
     ## nlme::intervals(fm_nlme,pool=FALSE)
     ## nlme::intervals(fm_nlme_nopool)
-    expect_equal(ci_lme4_nopool1[1:3,,1],
+    expect_equal(ci_lmeAddSigma_nopool1[1:3,,1],
                  structure(c(179.433862895996, 193.026448122379, 186.785722998616, 
                              308.951475285822, 217.083442786712, 220.182727910474),
                            .Dim = c(3L, 2L), .Dimnames = list(c("308", "309", "310"),
@@ -156,9 +156,9 @@ test_that("pooled",
 
 test_that("derived variables",
           {
-              fm_lme4 <- lme4:::lmList(log(Reaction) ~ Days | Subject, sleepstudy)
+              fm_lmeAddSigma <- lmeAddSigma:::lmList(log(Reaction) ~ Days | Subject, sleepstudy)
               fm_nlme <- nlme:::lmList(log(Reaction) ~ Days | Subject, sleepstudy)
-              expect_equal(c(coef(fm_lme4)),c(coef(fm_nlme)),tolerance=1e-5)
+              expect_equal(c(coef(fm_lmeAddSigma)),c(coef(fm_nlme)),tolerance=1e-5)
           })
           
 test_that("subset", {
@@ -171,8 +171,8 @@ test_that("subset", {
     cat.list.nlme <- nlme::lmList(mathach ~ cses | school,
                   subset = sector=="Catholic", 
                   data=RB)
-    cat.list.lme4 <- lme4::lmList(mathach ~ cses | school,
+    cat.list.lmeAddSigma <- lmeAddSigma::lmList(mathach ~ cses | school,
                                   subset = sector=="Catholic", data=RB)
-    expect_equal(c(coef(cat.list.lme4)),
+    expect_equal(c(coef(cat.list.lmeAddSigma)),
                  c(coef(cat.list.nlme)),tolerance=1e-5)
 })

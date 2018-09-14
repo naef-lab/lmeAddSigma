@@ -4,15 +4,15 @@
 //
 // Copyright (C)       2011 Douglas Bates, Martin Maechler and Ben Bolker
 //
-// This file is part of lme4.
+// This file is part of lmeAddSigma.
 
 #ifndef LME4_PREDMODULE_H
 #define LME4_PREDMODULE_H
 
 #include <RcppEigen.h>
-#include "lme4CholmodDecomposition.h"
+#include "lmeAddSigmaCholmodDecomposition.h"
 
-namespace lme4 {
+namespace lmeAddSigma {
 
     using Eigen::ArrayXd;
     using Eigen::LLT;
@@ -28,7 +28,7 @@ namespace lme4 {
         typedef MatrixXd::Scalar                          Scalar;
         typedef MatrixXd::Index                           Index;
         typedef Eigen::SparseMatrix<double>               SpMatrixd;
-        typedef lme4CholmodDecomposition<SpMatrixd>       ChmDecomp;
+        typedef lmeAddSigmaCholmodDecomposition<SpMatrixd>       ChmDecomp;
         typedef Eigen::MappedSparseMatrix<double>         MSpMatrixd;
     protected:
         MMap          d_X, d_RZX, d_V, d_VtV;

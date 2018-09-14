@@ -1,6 +1,6 @@
-library(lme4)
+library(lmeAddSigma)
 library(testthat)
-load(system.file("testdata","crabs_randdata00.Rda",package="lme4"))
+load(system.file("testdata","crabs_randdata00.Rda",package="lmeAddSigma"))
 
 test_that('RZX is being calculated properly', {
   # this is a test for an old problem, documented here:

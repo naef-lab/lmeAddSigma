@@ -3,11 +3,11 @@
 //
 // Copyright (C) 2011-2013 Douglas Bates, Martin Maechler, Ben Bolker and Steve Walker
 //
-// This file is part of lme4.
+// This file is part of lmeAddSigma.
 
 #include "predModule.h"
 
-namespace lme4 {
+namespace lmeAddSigma {
     using    Rcpp::as;
 
     using     std::invalid_argument;

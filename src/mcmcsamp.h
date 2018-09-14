@@ -4,14 +4,14 @@
 //
 // Copyright (C)       2012 Douglas Bates, Martin Maechler and Ben Bolker
 //
-// This file is part of lme4.
+// This file is part of lmeAddSigma.
 #ifndef LME4_MCMCSAMP_H
 #define LME4_MCMCSAMP_H
 
 #include "predModule.h"
 #include "respModule.h"
 
-namespace lme4 {
+namespace lmeAddSigma {
     class mcmcsamp {
     public:
         typedef Eigen::ArrayXd   Ar1;
@@ -23,15 +23,15 @@ namespace lme4 {
         typedef Eigen::MatrixXd  Mat;
         typedef Eigen::Map<Mat> MMat;
     protected:
-        // lme4::merPredD *d_pred;
-        // lme4::lmResp   *d_resp;
+        // lmeAddSigma::merPredD *d_pred;
+        // lmeAddSigma::lmResp   *d_resp;
         MVec                    d_dev;
         MMat                    d_fixef;
         MVec                    d_sigma;
         MMat                    d_ranef;
     public:
                                 // all the work is done in the constructor
-        mcmcsamp(lme4::merPredD *pred, lme4::lmResp *resp,
+        mcmcsamp(lmeAddSigma::merPredD *pred, lmeAddSigma::lmResp *resp,
                  SEXP dev, SEXP fixef, SEXP sigma, SEXP ranef);
     };
 }

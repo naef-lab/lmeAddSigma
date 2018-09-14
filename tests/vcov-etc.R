@@ -1,6 +1,6 @@
-stopifnot(require(lme4))
+stopifnot(require(lmeAddSigma))
 
-(testLevel <- lme4:::testLevel())
+(testLevel <- lmeAddSigma:::testLevel())
 
 ## "MEMSS" is just 'Suggest' -- must still work, when it's missing:
 if (suppressWarnings(!require(MEMSS,quietly=TRUE)) ||
@@ -65,7 +65,7 @@ if(testLevel <= 1) { cat('Time elapsed: ', proc.time(),'\n'); q("no") }
 
 ## ELSE : (testLevel > 1) :
 library(lattice)
-source(system.file("testdata/lme-tst-funs.R", package="lme4", mustWork=TRUE))
+source(system.file("testdata/lme-tst-funs.R", package="lmeAddSigma", mustWork=TRUE))
 ##--> all.equal(), isOptimized(), ...
 
 system.time(

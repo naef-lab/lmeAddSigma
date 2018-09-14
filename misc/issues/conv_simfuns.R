@@ -1,6 +1,6 @@
-library("lme4")
+library("lmeAddSigma")
 library("numDeriv")
-namedList <- lme4:::namedList ## from lmerControl.R
+namedList <- lmeAddSigma:::namedList ## from lmerControl.R
 
 simfun <- function(size=nrow(data),seed=NULL,
                    data=Penicillin,
@@ -12,7 +12,7 @@ simfun <- function(size=nrow(data),seed=NULL,
     sdat <- data[sample(x=nrow(data),size=size,replace=TRUE),]
     t1 <- system.time(fm2 <- fn(formula, sdat, ...))
     derivs <- fm2@optinfo$derivs
-    ## copied from lme4:::checkConv
+    ## copied from lmeAddSigma:::checkConv
     mineig <- min(eigen(fm2@optinfo$derivs$Hessian,only.values=TRUE)$value)
     dd <- as.function(fm2)  ## FIXME for glmer()
     t2 <- system.time(hh <- hessian(dd,getME(fm2,"theta")))

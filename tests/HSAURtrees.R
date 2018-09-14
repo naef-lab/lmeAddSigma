@@ -1,7 +1,7 @@
-library("lme4")
+library("lmeAddSigma")
 
 ## example from HSAUR2 package; data from 'multcomp'; see ../inst/testdata/trees513.R
-load(system.file("testdata","trees513.RData",package="lme4"))
+load(system.file("testdata","trees513.RData",package="lmeAddSigma"))
 
 ## model formula:
 modForm <- damage ~ species - 1 + (1 | lattice / plot)
@@ -12,19 +12,19 @@ ls.str(environment(dfun))# "for your information"
 
 .not.call <- function(x) x[names(x) != "call"]
 
-if(lme4:::testLevel() < 2) q("no")
+if(lmeAddSigma:::testLevel() < 2) q("no")
 ## {{advantage to  if(. >= 2) { ........} : autoprint of system.time() etc
 
 ## else  (testLevel >= 2) : --------------------------------------------------
 
 ## Generate oldres:
 ## ----------------
-## library(lme4.0)
+## library(lmeAddSigma.0)
 ## system.time(mmod0 <- glmer(damage ~ species - 1 + (1 | lattice / plot),
 ##               data = trees513, family = binomial()))
 ## ## 4 seconds
 ## oldres <- c(fixef(mmod0),getME(mmod0,"theta"))
-## detach("package:lme4.0")
+## detach("package:lmeAddSigma.0")
 ## dput(oldres)
 oldres <- structure(c(5.23645064474105, 4.73568475545248, 2.65289926317093,
                       1.29043984816924, 1.59329381563025,

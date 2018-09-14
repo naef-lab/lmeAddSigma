@@ -10,17 +10,17 @@ if(FALSE) {
     ## --> 5 warnings
 }
 
-attach(system.file("testdata", "polytom2.RData", package="lme4"))
+attach(system.file("testdata", "polytom2.RData", package="lmeAddSigma"))
 ls.str(2)
 ## formula.poisson, data.poisson
 
-library(lme4)
-## library(lme4.0)
+library(lmeAddSigma)
+## library(lmeAddSigma.0)
 system.time( g1 <- glmer(formula.poisson, data=data.poisson, family=poisson) )
-## from lme4.0:
+## from lmeAddSigma.0:
 ## does work, but we get fixed effect parameters with abs > 18 ...
 
-attach(system.file("testdata", "polytom3.RData", package="lme4"))
+attach(system.file("testdata", "polytom3.RData", package="lmeAddSigma"))
 
 system.time( g2 <- glmer(formula.poisson, data=data.poisson, family=poisson) )
 

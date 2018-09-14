@@ -1,4 +1,4 @@
-library(lme4)
+library(lmeAddSigma)
 data(Orthodont, package="nlme")
 fm1 <- lmer(distance ~ age + (age|Subject), data = Orthodont)
 VarCorr(fm1)
@@ -15,8 +15,8 @@ gm2 <- update(gm1,.~.+(1|obs))
 VarCorr(gm2)
 
 if (FALSE) {
-  ## testing lme4/lme4 incompatibility
-##  library(lme4)
+  ## testing lmeAddSigma/lmeAddSigma incompatibility
+##  library(lmeAddSigma)
   VarCorr(fm1)
-  lme4:::VarCorr.merMod(fm1) ## OK
+  lmeAddSigma:::VarCorr.merMod(fm1) ## OK
 }

@@ -2,11 +2,11 @@
 ##  -------------------
 
 ### The output of tests here are *not* 'diff'ed  (<==> no *.Rout.save file)
-library(lme4)
+library(lmeAddSigma)
 
 ## 'Theoph' Data modeling
 
-if (lme4:::testLevel() > 1) {
+if (lmeAddSigma:::testLevel() > 1) {
     Th.start <- c(lKe=-2.5, lKa=0.5, lCl=-3)
 
     (nm2 <- nlmer(conc ~ SSfol(Dose, Time,lKe, lKa, lCl) ~ lKe+lKa+lCl|Subject,

@@ -1,10 +1,10 @@
-library(lme4)
-cat("lme4 testing level: ", testLevel <- lme4:::testLevel(), "\n")
+library(lmeAddSigma)
+cat("lmeAddSigma testing level: ", testLevel <- lmeAddSigma:::testLevel(), "\n")
 
 
 getNBdisp <- function(x) getME(x,"glmer.nb.theta")
 ## for now, use hidden functions [MM: this is a sign, we should *export* them]
-refitNB   <- lme4:::refitNB
+refitNB   <- lmeAddSigma:::refitNB
 
 simfun <- function(sd.u=1, NBtheta=0.5,
                    nblock=25,

@@ -685,7 +685,7 @@ nlformula <- function(mc) {
 ## Beginning to think about exposing tools to create devcomp lists.
 ## Could be useful when extending merMod objects.  Commenting them out
 ## however, because R CMD check is complaining:
-## https://github.com/lme4/lme4/commit/8d71e439758999ea8f90eb4752487e189407ef33#commitcomment-8773017
+## https://github.com/lmeAddSigma/lmeAddSigma/commit/8d71e439758999ea8f90eb4752487e189407ef33#commitcomment-8773017
 ################################################################################
 ##
 ## .dims <- function(pp, resp, nAGQ,
@@ -735,7 +735,7 @@ nlformula <- function(mc) {
 
 .minimalOptinfo <- function()
     list(conv = list(opt = 0L,
-                     lme4 = list(messages = character(0))))
+                     lmeAddSigma = list(messages = character(0))))
 
 getConv <- function(x) {
     if (!is.null(x[["conv"]])) {
@@ -743,11 +743,11 @@ getConv <- function(x) {
     } else x[["convergence"]]
 }
 
-.optinfo <- function(opt, lme4conv=NULL)
+.optinfo <- function(opt, lmeAddSigmaconv=NULL)
     list(optimizer = attr(opt, "optimizer"),
          control   = attr(opt, "control"),
          derivs    = attr(opt, "derivs"),
-         conv      = list(opt = getConv(opt), lme4 = lme4conv),
+         conv      = list(opt = getConv(opt), lmeAddSigma = lmeAddSigmaconv),
          feval     = if (is.null(opt$feval)) NA else opt$feval,
          warnings  = attr(opt, "warnings"),
          val       = opt$par)
@@ -773,7 +773,7 @@ hasNoScale <- function(family)
 ##' @param rho the environment of the objective function
 ##' @param opt the value returned by the optimizer
 ##' @param reTrms reTrms list from the calling function
-mkMerMod <- function(rho, opt, reTrms, fr, mc, lme4conv=NULL) {
+mkMerMod <- function(rho, opt, reTrms, fr, mc, lmeAddSigmaconv=NULL) {
     if(missing(mc)) mc <- match.call()
     stopifnot(is.environment(rho),
               is(pp <- rho$pp, "merPredD"),
@@ -849,7 +849,7 @@ mkMerMod <- function(rho, opt, reTrms, fr, mc, lme4conv=NULL) {
         u=if (trivial.y) rep(NA_real_,nrow(pp$Zt)) else pp$u(fac),
         lower=reTrms$lower, devcomp=list(cmp=cmp, dims=dims),
         pp=pp, resp=resp,
-        optinfo = .optinfo(opt, lme4conv))
+        optinfo = .optinfo(opt, lmeAddSigmaconv))
 }## {mkMerMod}
 
 ## generic argument checking
@@ -1002,7 +1002,7 @@ checkFormulaData <- function(formula, data, checkLHS=TRUE,
 
 
 ##' Not exported; for tests (and examples) that can be slow;
-##' Use   if(lme4:::testLevel() >= 1.) .....  see ../README.md
+##' Use   if(lmeAddSigma:::testLevel() >= 1.) .....  see ../README.md
 testLevel <- function()
     if(nzchar(s <- Sys.getenv("LME4_TEST_LEVEL")) &&
        is.finite(s <- as.numeric(s))) s else 1
@@ -1145,19 +1145,19 @@ mmList.formula <- function(object, frame, ...) {
 }
 ##' examples  ---FIXME?--- put in tests // or export + 'real examples'
 if(FALSE) {
-    library(lme4)
+    library(lmeAddSigma)
     m <- lmer(Reaction ~ Days + (Days | Subject), sleepstudy)
     gm <- glmer(cbind(incidence, size-incidence) ~ period + (1|herd), cbpp, binomial)
     simForm <- y ~ x + z + (x | f) + (z | g)
     ## ::: triggers R CMD check NOTE
-    ## simDat <- lme4:::quickSimulate(simForm, 10, 5)
+    ## simDat <- lmeAddSigma:::quickSimulate(simForm, 10, 5)
     simDat <- simDat[simDat$f != "10", ] # unbalancedish design requiring
                                         # a flip in the order of terms
     sm <- lmer(simForm, simDat)
     ## ::: triggers R CMD check NOTE
-    ## lme4:::mmList.merMod(m)
-    ## lme4:::mmList.merMod(gm)
-    ## smmm <- lme4:::mmList.merMod(sm)
+    ## lmeAddSigma:::mmList.merMod(m)
+    ## lmeAddSigma:::mmList.merMod(gm)
+    ## smmm <- lmeAddSigma:::mmList.merMod(sm)
 }
 
 nloptwrap <- local({

@@ -2,16 +2,16 @@
 ##' @aliases mcmcsamp
 ##' @title Getting p-values for fitted models
 ##' 
-##' @description One of the most frequently asked questions about \code{lme4}
+##' @description One of the most frequently asked questions about \code{lmeAddSigma}
 ##' is "how do I calculate p-values for estimated parameters?"
-##' Previous versions of \code{lme4} provided the \code{mcmcsamp}
+##' Previous versions of \code{lmeAddSigma} provided the \code{mcmcsamp}
 ##' function, which efficiently generated a Markov chain Monte Carlo sample
 ##' from the posterior distribution of the parameters, assuming
 ##' flat (scaled likelihood) priors. Due to difficulty in
 ##' constructing a version of \code{mcmcsamp} that was reliable
 ##' even in cases where the estimated random effect variances were near
 ##' zero (e.g. \url{https://stat.ethz.ch/pipermail/r-sig-mixed-models/2009q4/003115.html}), \code{mcmcsamp} has been withdrawn (or more precisely,
-##' not updated to work with \code{lme4} versions >=1.0.0).
+##' not updated to work with \code{lmeAddSigma} versions >=1.0.0).
 ##'
 ##' Many users, including users of the \code{aovlmer.fnc} function
 ##' from the \code{languageR} package which relies on \code{mcmcsamp},

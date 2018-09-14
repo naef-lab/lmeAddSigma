@@ -2,11 +2,11 @@
 ## options(contrasts=c("contr.sum","contr.poly"))
 ## drop1(fecpoiss_lm3,test="Chisq",scope=.~.)
 
-library(lme4)
+library(lmeAddSigma)
 oldopts <- options(contrasts=c("contr.sum","contr.poly"))
 fm1 <- lmer(Reaction~Days+(Days|Subject),data=sleepstudy)
 drop1(fm1,test="Chisq")
-## debug(lme4:::drop1.merMod)
+## debug(lmeAddSigma:::drop1.merMod)
 drop1(fm1,test="Chisq",scope=.~.)
 
 fm0 <- lm(Reaction~Days+Subject,data=sleepstudy)

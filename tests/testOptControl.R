@@ -1,7 +1,7 @@
-## https://github.com/lme4/lme4/issues/59
-library(lme4)
-dat <- read.csv(system.file("testdata","dat20101314.csv",package="lme4"))
-NMcopy <- lme4:::Nelder_Mead
+## https://github.com/lmeAddSigma/lmeAddSigma/issues/59
+library(lmeAddSigma)
+dat <- read.csv(system.file("testdata","dat20101314.csv",package="lmeAddSigma"))
+NMcopy <- lmeAddSigma:::Nelder_Mead
 
 cc <- capture.output(lmer(y ~ (1|Operator)+(1|Part)+(1|Part:Operator), data=dat,
                           control=

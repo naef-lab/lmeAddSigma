@@ -1,6 +1,6 @@
 ## original code was designed to detect segfaults/hangs from error handling
 
-library(lme4)
+library(lmeAddSigma)
 set.seed(101)
 d <- expand.grid(block=LETTERS[1:26],rep=1:100)
 d$x <- runif(nrow(d))

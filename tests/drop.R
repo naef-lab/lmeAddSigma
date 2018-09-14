@@ -1,4 +1,4 @@
-library(lme4)
+library(lmeAddSigma)
 fm1 <- lmer(Reaction ~ Days + (Days|Subject), sleepstudy)
 
 ## slightly weird model but plausible --- not that

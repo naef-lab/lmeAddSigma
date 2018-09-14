@@ -10,7 +10,7 @@ if (require(knitr)) opts_chunk$set(tidy=FALSE)
 ##'  delete this file if you want to update the output ...)
 
 ##+ pkgs,message=FALSE,warning=FALSE
-pkgs <- c("lme4","optimx","lme4.0","nloptr")
+pkgs <- c("lmeAddSigma","optimx","lmeAddSigma.0","nloptr")
 invisible(lapply(pkgs,library,character.only=TRUE))
 print(sapply(pkgs,function(x) as.character(packageVersion(x))),quote=FALSE)
 
@@ -58,12 +58,12 @@ set.seed(101)
 subdat <- dialectNL[sample(round(sampfrac*ntot)),]
 
 fitLme4.0 <- function(data=subdat) {
-    tval <- system.time(fit <- lme4.0::lmer(fullForm, data=data))
+    tval <- system.time(fit <- lmeAddSigma.0::lmer(fullForm, data=data))
     list(time=tval, fit=fit)
 }
 
 fitLme4 <- function(optCtrl=list(), optimizer, data=subdat) {
-    tval <- system.time(fit <- lme4::lmer(fullForm,data=data,
+    tval <- system.time(fit <- lmeAddSigma::lmer(fullForm,data=data,
           control=lmerControl(optimizer=optimizer, optCtrl=optCtrl)))
     list(time=tval, fit=fit)
 }
@@ -101,7 +101,7 @@ if (!file.exists(batchfn)) {
 load(batchfn)
 
 ##+ calcOutput,echo=FALSE
-fitList <- c(lme4.0 = list(fitList0), fitList1)
+fitList <- c(lmeAddSigma.0 = list(fitList0), fitList1)
 tinfo <- function(x) {
     times <- c(x[["time"]][1:3])
     evals <- if (!is(f <- x[["fit"]],"merMod")) NA else f@optinfo$feval
@@ -127,7 +127,7 @@ options(op)
 
 ##' ### Notes/conclusion
 ##'
-##' * `lme4.0`, and `L-BFGS-B` get similar parameters and log-likelihoods (probably because they're both derivative-based, although `nlminb` is different
+##' * `lmeAddSigma.0`, and `L-BFGS-B` get similar parameters and log-likelihoods (probably because they're both derivative-based, although `nlminb` is different
 ##' * most of the `nloptr` optimizers do OK with deviance (although `COBYLA` does relatively poorly), but the parameters are all over the place (very flat surface ...)
 ##' * `nm2` (built-in Nelder-Mead with `maxfun` extended to 1e5) gets slightly worse logLik and bogus parameters
 ##' * `nm1` (built-in Nelder-Mead with default `maxfun=1e4`) gets stuck, bad LL and parameters; we get a convergence warning, but I think there's a glitch somewhere because the `@optinfo$conv` flag isn't set??
@@ -141,8 +141,8 @@ fits[["nm1"]]@optinfo
 
 ##+ nlopttest,eval=FALSE
 ## dd <- update(fits[["nm1"]],devFunOnly=TRUE)  ## FAILS (bad stuff with finding optCtrl in environments ...)
-dd <- lme4::lmer(fullForm,data=subdat,devFunOnly=TRUE)
-lbound <- lme4:::getME(fits[["nm1"]],"lower")
+dd <- lmeAddSigma::lmer(fullForm,data=subdat,devFunOnly=TRUE)
+lbound <- lmeAddSigma:::getME(fits[["nm1"]],"lower")
 res <- nloptr(x0=rep(1,14),eval_f=dd,lb=lbound,opts=nlopt("NLOPT_LN_BOBYQA"))
 
 load("wieling_batch2.RData")

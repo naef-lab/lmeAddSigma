@@ -4,7 +4,7 @@
 //
 // Copyright (C)       2012 Douglas Bates, Martin Maechler and Ben Bolker
 //
-// This file is part of lme4.
+// This file is part of lmeAddSigma.
 #ifndef LME4_GLMFAMILY_H
 #define LME4_GLMFAMILY_H
 

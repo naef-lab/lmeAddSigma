@@ -58,7 +58,7 @@ getIDLabels <- function(object, form=formula(object)) {
 }
 
 ## TESTING
-## lme4:::getIDLabels(fm1)
+## lmeAddSigma:::getIDLabels(fm1)
 
 ## Return the formula(s) for the groups associated with object.
 ## The result is a one-sided formula unless asList is TRUE in which case

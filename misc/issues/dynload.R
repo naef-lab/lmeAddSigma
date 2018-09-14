@@ -1,17 +1,17 @@
 ## this is the more complex version of the code for testing/exercising
-## https://github.com/lme4/lme4/issues/35
+## https://github.com/lmeAddSigma/lmeAddSigma/issues/35
 ## see also ../../tests/dynload.R for the simpler version
-pkg <- so_name <- "lme4"  ## package to test
+pkg <- so_name <- "lmeAddSigma"  ## package to test
 doUnload <- FALSE         ## manual unloading?
 doTest <- TRUE            ## run test between load/unload cycles?
-use_devtools <- FALSE     ## use load_all/unload rather than library/detach; only works if wd=lme4 directory
+use_devtools <- FALSE     ## use load_all/unload rather than library/detach; only works if wd=lmeAddSigma directory
 otherpkg <- "digest"      ## package to load/unload between focal package loading/unloading
 ## for running e.g. from uninstalled binary of R with full valgrind:
 ##    .libPaths(c("/usr/local/lib/R/library","/usr/local/lib/R/site-library"))
 ## -- alternative options --
 ## pkg <- so_name <- "RcppEigen"; doUnload <- TRUE; doTest <- TRUE
-## need to deal with the fact that DLL name != package name for lme4.0 ...
-### pkg <- "lme4.0"; so_name <- "lme4"; doUnload <- TRUE
+## need to deal with the fact that DLL name != package name for lmeAddSigma.0 ...
+### pkg <- "lmeAddSigma.0"; so_name <- "lmeAddSigma"; doUnload <- TRUE
 instPkgs <- as.data.frame(installed.packages(),stringsAsFactors=FALSE)
 Load <- function() {
     if (use_devtools) {
@@ -47,7 +47,7 @@ tmpf <- function() {
 }
 test <- function() {
     if (doTest) {
-        if (pkg %in% c("lme4","lme4.0")) {
+        if (pkg %in% c("lmeAddSigmaAddSigma","lmeAddSigma.0")) {
             fm1 <- lmer(Reaction ~ Days + (Days|Subject), sleepstudy,
                         devFunOnly=TRUE)
         }
@@ -63,7 +63,7 @@ test <- function() {
 
 ## erase existing .onUnload hook
 ## nullfun <- function(libpath) { cat("fake unload\n") }
-## assignInNamespace(".onUnload",nullfun,"lme4")
+## assignInNamespace(".onUnload",nullfun,"lmeAddSigma")
 
 for (i in 1:6) {
     cat("Attempt #",i,"\n",sep="")
@@ -80,9 +80,9 @@ for (i in 1:6) {
     cat("detaching",otherpkg,"\n")
 }
 
-## lme4/digest with unload=FALSE: OK
+## lmeAddSigma/digest with unload=FALSE: OK
 cycle1 <- function() {
-    library(lme4); capture.output(example(lmer)); detach(package:lme4)
+    library(lmeAddSigmaAddSigma); capture.output(example(lmer)); detach(package:lmeAddSigma)
     library(digest); detach(package:digest,unload=TRUE)
 }
 invisible(replicate(10,cycle1()))
@@ -100,17 +100,17 @@ cycle3 <- function() {
 invisible(replicate(10,cycle3()))
 ## lmer/digest with unload=TRUE: NOT OK
 cycle4 <- function() {
-    library(lme4); capture.output(example(lmer)); detach(package:lme4,unload=TRUE)
+    library(lmeAddSigma); capture.output(example(lmer)); detach(package:lmeAddSigma,unload=TRUE)
     library(digest); detach(package:digest,unload=TRUE)
 }
 invisible(replicate(10,cycle4()))
 ## lmer/digest with unload=TRUE but unload hook removed: OK
 aa <- function() {
     fun0 <- function(libpath) { cat("fake unload\n") }
-    assignInNamespace(".onUnload",fun0,"lme4")
+    assignInNamespace(".onUnload",fun0,"lmeAddSigma")
 }
 cycle5 <- function() {
-    library(lme4); capture.output(example(lmer)); aa(); detach(package:lme4,unload=TRUE)
+    library(lmeAddSigma); capture.output(example(lmer)); aa(); detach(package:lmeAddSigma,unload=TRUE)
     library(digest); detach(package:digest,unload=TRUE)
 }
 invisible(replicate(10,cycle5()))
@@ -122,7 +122,7 @@ invisible(replicate(10,cycle5()))
 ##    the proximal problem is .Call(merPredDCreate,...)
 ##    now checking to see if the non-trivial stuff on ll. 52ff of predModule.cpp
 ##   (RX.compute, updateLamtUt, analyzePattern, etc.) are necessary -- they're not.
-## so ... we should be able to make lme4_Lobotomized (with apologies to all mental
+## so ... we should be able to make lmeAddSigma_Lobotomized (with apologies to all mental
 ##  patients) which contains _only_ AllClass.R, predModule.cpp, external.cpp
 ##  i.e. just the definitions of merPredD class and its creation
 ## ... and this should cause the same problem ...

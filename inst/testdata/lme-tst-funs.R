@@ -1,7 +1,7 @@
-####  Utility Functions for lme4 Testing
+####  Utility Functions for lmeAddSigma Testing
 ####  ----------------------------------
 if(FALSE) ### "Load" these by
-    source(system.file("testdata", "lme-tst-funs.R", package="lme4", mustWork=TRUE))
+    source(system.file("testdata", "lme-tst-funs.R", package="lmeAddSigma", mustWork=TRUE))
 ## e.g. from ../../tests/glmmWeights.R
 
 ##' example originally from Gabor Grothendieck
@@ -61,20 +61,20 @@ gSim <- function(nblk=26,
 
 ### For Model comparisons
 
-## a version of getME() that can be used for objects, both from lme4.0 or lme4
+## a version of getME() that can be used for objects, both from lmeAddSigma.0 or lmeAddSigma
 gimME <- function(mod, nm, is.mer = is(mod,"mer"))
-    if(is.mer) lme4.0::getME(mod,nm) else lme4::getME(mod,nm)
+    if(is.mer) lmeAddSigma.0::getME(mod,nm) else lmeAddSigma::getME(mod,nm)
 
 ##' @title All Coefficients of fitted  (G)LMM model
-##' @param mod a fitted (G)LMM model from pkg lme4.0 or lme4
+##' @param mod a fitted (G)LMM model from pkg lmeAddSigma.0 or lmeAddSigma
 ##' @param incl.t logical, indicating if 'beta' should include std.errors and t-values
 ##' @return named vector of coefficients [ beta | theta | sigma ]
 ##' @author Martin Maechler
 allcoefs <- function(mod, incl.t = FALSE) {
     iMer <- is(mod, "mer")
     sigmaF <- {
-	if (iMer) lme4.0::sigma else if(getRversion() >= "3.3.0")
-	    stats::sigma else lme4::sigma
+	if (iMer) lmeAddSigma.0::sigma else if(getRversion() >= "3.3.0")
+	    stats::sigma else lmeAddSigma::sigma
     }
     ## incl.t: rather also the std.err., t-values:
     c(beta = if(incl.t) coef(summary(mod)) else gimME(mod, "beta", iMer),
@@ -82,7 +82,7 @@ allcoefs <- function(mod, incl.t = FALSE) {
       sigma = sigmaF(mod))
 }
 
-##' S3 method but also works for lme4.0:
+##' S3 method but also works for lmeAddSigma.0:
 all.equal.merMod <- function(target, current, incl.t=FALSE, ...) {
     all.equal(allcoefs(target,  incl.t),
               allcoefs(current, incl.t), ...)

@@ -1,4 +1,4 @@
-library(lme4)
+library(lmeAddSigma)
 
 ## ----------------------------------------------------------------------
 ## test that deviance(REMLfit, REML = FALSE) gives the same answer as

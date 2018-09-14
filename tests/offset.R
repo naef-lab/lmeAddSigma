@@ -1,6 +1,6 @@
 ## simple examples with offsets, to exercise methods etc.
 
-library(lme4)
+library(lmeAddSigma)
 ## generate a basic Gamma/random effects sim
 set.seed(101)
 d <- expand.grid(block=LETTERS[1:26],rep=1:100)

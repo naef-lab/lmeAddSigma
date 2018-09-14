@@ -412,7 +412,7 @@ predict.merMod <- function(object, newdata=NULL, newparams=NULL,
                 ## evaluate new fixed effect
                 RHS <- formula(substitute(~R,
                          list(R=RHSForm(formula(object,fixed.only=TRUE)))))
-                ## https://github.com/lme4/lme4/issues/414
+                ## https://github.com/lmeAddSigma/lmeAddSigma/issues/414
                 ## contrasts are not relevant in random effects;
                 ##  model.frame.default warns about dropping contrasts
                 ##  if (1) xlev is specified and (2) any factors in
@@ -508,7 +508,7 @@ simulate.merMod <- function(object, nsim = 1, seed = NULL, use.u = FALSE,
                             family=NULL,
                             allow.new.levels=FALSE, na.action=na.pass, ...) {
     mc <- match.call()
-    mc[[1]] <- quote(lme4::.simulateFun)
+    mc[[1]] <- quote(lmeAddSigma::.simulateFun)
     eval(mc, parent.frame(1L))
 }
 
@@ -765,7 +765,7 @@ simulate.merMod <- function(object, nsim = 1, seed = NULL, use.u = FALSE,
 ########################
 ## modified from stats/family.R
 ## TODO: the $simulate methods included with R families by default
-## are not sufficiently flexible to be re-used by lme4.
+## are not sufficiently flexible to be re-used by lmeAddSigma.
 ## these are modified by:
 ## (1) adding a 'ftd' argument for the fitted values
 ##     that defaults to fitted(object), to allow more flexibility

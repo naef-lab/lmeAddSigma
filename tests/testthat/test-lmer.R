@@ -1,4 +1,4 @@
-stopifnot(require("testthat"), require("lme4"))
+stopifnot(require("testthat"), require("lmeAddSigma"))
 
 context("fitting lmer models")
 ## is "Nelder_Mead" default optimizer? -- no longer
@@ -87,7 +87,7 @@ test_that("lmer", {
                  "number of observations \\(=36\\) <= number of random effects \\(=36\\)")
     ## with most recent Matrix (1.1-1), should *not* flag this
     ## for insufficient rank
-    dat <- readRDS(system.file("testdata", "rankMatrix.rds", package="lme4"))
+    dat <- readRDS(system.file("testdata", "rankMatrix.rds", package="lmeAddSigma"))
     expect_is(lFormula(y ~ (1|sample) + (1|day) + (1|day:sample) +
                            (1|operator) + (1|day:operator) + (1|sample:operator) +
                            (1|day:sample:operator),
@@ -135,7 +135,7 @@ test_that("lmer", {
                       "number of levels of each grouping factor"))
 
     ## check for errors with illegal input checking options
-    flags <- lme4:::.get.checkingOpts(names(formals(lmerControl)))
+    flags <- lmeAddSigma:::.get.checkingOpts(names(formals(lmerControl)))
     .t <- lapply(flags, function(OPT) {
 	## set each to invalid string:
 	## cat(OPT,"\n")
@@ -204,7 +204,7 @@ test_that("lmer", {
     ## test messed-up Hessian
     fm1 <- lmer(z~ as.numeric(f) + 1|f, d)
     fm1@optinfo$derivs$Hessian[2,2] <- NA
-    expect_warning(lme4:::checkConv(fm1@optinfo$derivs,
+    expect_warning(lmeAddSigma:::checkConv(fm1@optinfo$derivs,
                      coefs=c(1,1),
                      ctrl=lmerControl()$checkConv,lbound=0),
                    "Problem with Hessian check")
@@ -259,7 +259,7 @@ test_that("coef_lmer", {
                     var1=factor(sample(1:5,size=100,replace=TRUE)),
                     var2=runif(100),
                     var3=factor(sample(1:5,size=100,replace=TRUE)))
-    library(lme4)
+    library(lmeAddSigma)
     mix1 <- lmer(resp ~ 0 + var1 + var1:var2 + (1|var3), data=d)
     c1 <- coef(mix1)
     expect_is(c1, "coef.mer")

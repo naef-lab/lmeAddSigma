@@ -40,7 +40,7 @@ function(packages, which = c("Depends", "Imports", "LinkingTo"),
     d
 }
 
-getDepends <- function(pkg="lme4",verbose=FALSE, getSuggests=TRUE) {
+getDepends <- function(pkg="lmeAddSigma",verbose=FALSE, getSuggests=TRUE) {
     if (verbose) cat("retrieving dependency information\n")
     w <-  c("Depends", "Imports", "LinkingTo")
     if (getSuggests) w <- c(w,"Suggests")
@@ -59,7 +59,7 @@ checkPkg <- function(pn,verbose=FALSE,
                      tarballdir="./tarballs",libdir="./library",
                      checkdir=".",skip=FALSE,
                      check_time=TRUE,
-                     upstreamPkg="lme4")
+                     upstreamPkg="lmeAddSigma")
 {
 
     ## expand paths to protect against setwd() for R CMD check
@@ -238,8 +238,8 @@ errLevels <- c(paste("error",
                "OK")
 genReport <- function(depmatrix,      ## results of reverse_dependencies_with_maintainer()
                       testresults,   ## list of packages with elements status, msg, time, location, version
-                      contact="lme4-authors <at> r-forge.wu-wien.ac.at",
-                      pkg="lme4",
+                      contact="lmeAddSigma-authors <at> r-forge.wu-wien.ac.at",
+                      pkg="lmeAddSigma",
                       outfn=paste0(pkg,"_compat_report"),
                       verbose=FALSE,
                       extra.info=NULL,
@@ -291,7 +291,7 @@ genReport <- function(depmatrix,      ## results of reverse_dependencies_with_ma
                  Title=title)
     HTML("<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\">")  ## for special chars in names etc.
     HTML.title(title,HR=1)
-    HTML(paste(pkg,"version:",dumbQuotes(packageVersion(sessionInfo()$otherPkgs$lme4))))
+    HTML(paste(pkg,"version:",dumbQuotes(packageVersion(sessionInfo()$otherPkgs$lmeAddSigma))))
     HTML(paste("Test date: ",date()))
     HTML.title("Notes",HR=2)
     HTML("<ul>")
@@ -307,7 +307,7 @@ genReport <- function(depmatrix,      ## results of reverse_dependencies_with_ma
     outfn
 }
 
-doPkgDeptests <- function(pkg="lme4",
+doPkgDeptests <- function(pkg="lmeAddSigma",
                           do_parallel=TRUE,
                           testdir=getwd(),
                           tarballdir=file.path(testdir,"tarballs"),
@@ -350,7 +350,7 @@ doPkgDeptests <- function(pkg="lme4",
     ##   expects recent source tarball in working directory
 
     ## FIXME: package dependencies
-    ##   lme4-specific; should get these straight from DESCRIPTION file
+    ##   lmeAddSigma-specific; should get these straight from DESCRIPTION file
     pkgdep <- c("Rcpp","RcppEigen","minqa")
     if (missing(pkg_tarball) && is.null(pkg_tarball)) {
          pkg_tarball <- list.files(pattern=paste0(pkg,".*.tar.gz"))

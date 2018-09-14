@@ -22,19 +22,19 @@
 
 ## save("grouseticks","grouseticks_agg",file="grouseticks.rda")
 
-library(lme4)
+library(lmeAddSigma)
 data(grouseticks)
 do.plots <- FALSE
 form <- TICKS~YEAR+HEIGHT+(1|BROOD)+(1|INDEX)+(1|LOCATION)
 
-## fit with lme4
-## library(lme4)
+## fit with lmeAddSigma
+## library(lmeAddSigma)
 ## t1 <- system.time(full_mod1  <- glmer(form, family="poisson",data=grouseticks))
 ## c1 <- c(fixef(full_mod1),unlist(VarCorr(full_mod1)), logLik=logLik(full_mod1),time=t1["elapsed"])
 ## allcoefs1 <- c(unlist(full_mod1@ST),fixef(full_mod1))
-## detach("package:lme4")
+## detach("package:lmeAddSigma")
 
-## lme4 summary results:
+## lmeAddSigma summary results:
 t1 <- structure(c(1.288, 0.048, 1.36, 0, 0), class = "proc_time",
                 .Names = c("user.self",
                   "sys.self", "elapsed", "user.child", "sys.child"))
@@ -55,7 +55,7 @@ allcoefs1 <- structure(c(0.541509425632023, 0.750034415832756,
                        .Names = c("", "", "", "(Intercept)",
                          "YEAR96", "YEAR97",  "HEIGHT"))
 
-if (lme4:::testLevel() > 1) {
+if (lmeAddSigma:::testLevel() > 1) {
     t2 <- system.time(full_mod2  <- glmer(form, family="poisson",data=grouseticks))
     c2 <- c(fixef(full_mod2),unlist(VarCorr(full_mod2)),
             logLik=logLik(full_mod2),time=t2["elapsed"])

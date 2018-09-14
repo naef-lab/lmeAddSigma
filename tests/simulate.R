@@ -1,9 +1,9 @@
-library(lme4)
+library(lmeAddSigma)
 library(testthat)
 
-(testLevel <- lme4:::testLevel())
+(testLevel <- lmeAddSigma:::testLevel())
 L <- load(system.file("testdata/lme-tst-fits.rda",
-                      package="lme4", mustWork=TRUE))
+                      package="lmeAddSigma", mustWork=TRUE))
 if (getRversion() > "3.0.0") {
     ## saved fits are not safe with old R versions
 

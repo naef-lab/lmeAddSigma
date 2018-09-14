@@ -1,4 +1,4 @@
-stopifnot(suppressPackageStartupMessages(require(lme4)))
+stopifnot(suppressPackageStartupMessages(require(lmeAddSigma)))
 
 ## Using simple generated data -- fully balanced here, unbalanced later
 set.seed(1)
@@ -11,7 +11,7 @@ dat <- within(data.frame(lagoon = factor(rep(1:4, each = 25)),
               y2 <- y + RE
           })
 
-## FIXME:   want  lmer(* , sparseX = TRUE )  {as in lme4a}
+## FIXME:   want  lmer(* , sparseX = TRUE )  {as in lmeAddSigmaa}
 if (FALSE) {                            # need to adapt to new structure
 
 ##' <description>

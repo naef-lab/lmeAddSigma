@@ -1,4 +1,4 @@
-library(lme4)
+library(lmeAddSigma)
 
 ## raw residuals for LMMs
 fm1 <- lmer(Reaction ~ Days + (Days|Subject), sleepstudy)

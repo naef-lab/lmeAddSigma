@@ -1,6 +1,6 @@
 #### Various tests of random-effects identifiability:
 
-library(lme4)
+library(lmeAddSigma)
 
 ## 1. from ../inst/tests/test-lmer.R:
 ## only two observations per individual, attempt to fit random slopes model

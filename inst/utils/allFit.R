@@ -1,5 +1,5 @@
 ##
-library("lme4")
+library("lmeAddSigma")
 require("optimx")   ## for optim optimizers
    ## (optimx-specific optimizers require explicit gradients --
    ##  we could use numDeriv::grad, but this seems to defeat
@@ -17,8 +17,8 @@ meth.tab.0 <- cbind(optimizer=
                   method= c(rep("",4), "L-BFGS-B",
                   "NLOPT_LN_NELDERMEAD", "NLOPT_LN_BOBYQA"))
 
-nlminbw   <- lme4:::nlminbwrap
-namedList <- lme4:::namedList
+nlminbw   <- lmeAddSigma:::nlminbwrap
+namedList <- lmeAddSigma:::namedList
 
 if (require("dfoptim")) {
     nmkbw <- function(fn,par,lower,upper,control) {
@@ -46,7 +46,7 @@ if (require("dfoptim")) {
 ##' The default is to use all known optimizers for R that satisfy the
 ##' requirements (do not require explicit gradients, allow
 ##' box constraints), in three categories; (i) built-in
-##' (minqa::bobyqa, lme4::Nelder_Mead, nlminbwrap), (ii) wrapped via optimx
+##' (minqa::bobyqa, lmeAddSigma::Nelder_Mead, nlminbwrap), (ii) wrapped via optimx
 ##' (most of optimx's optimizers that allow box constraints require
 ##' an explicit gradient function to be specified; the two provided
 ##' here are really base R functions that can be accessed via optimx,
@@ -61,7 +61,7 @@ if (require("dfoptim")) {
 ##' @return a list of fitted \code{merMod} objects
 ##' @seealso slice, slice2D in the bbmle package
 ##' @examples
-##' library(lme4)
+##' library(lmeAddSigma)
 ##' gm1 <- glmer(cbind(incidence, size - incidence) ~ period + (1 | herd),
 ##'                  data = cbpp, family = binomial)
 ##' gm_all <- allFit(gm1)
@@ -135,7 +135,7 @@ print.allfit <- function(object, width=80, ...) {
 summary.allfit <- function(object, ...) {
     which.OK <- !sapply(object, is, "error")
     objOK <- object[which.OK]
-    msgs <- lapply(objOK, function(x) x@optinfo$conv$lme4$messages)
+    msgs <- lapply(objOK, function(x) x@optinfo$conv$lmeAddSigma$messages)
     fixef <- do.call(rbind, lapply(objOK, fixef))
     llik <- sapply(objOK, logLik)
     times <- t(sapply(objOK, attr, "time"))
@@ -144,7 +144,7 @@ summary.allfit <- function(object, ...) {
         as.data.frame(VarCorr(x))[, "sdcor"]))
     theta <- do.call(rbind, lapply(objOK,
                                    function(x) getME(x, "theta")))
-    cnm <- lme4:::tnames(objOK[[1]])
+    cnm <- lmeAddSigma:::tnames(objOK[[1]])
     if (sigma(object[[1]])!=1) cnm <- c(cnm,"sigma")
     colnames(sdcor) <- unname(cnm)
     sdcor <- as.data.frame(sdcor)

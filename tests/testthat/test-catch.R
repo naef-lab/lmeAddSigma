@@ -1,5 +1,5 @@
 library("testthat")
-library("lme4")
+library("lmeAddSigma")
 
 context("storing warnings, convergence status, etc.")
 

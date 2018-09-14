@@ -1,4 +1,4 @@
-library(lme4)
+library(lmeAddSigma)
 fm1 <- lmer(Reaction ~ Days + (Days|Subject), sleepstudy)
 fm1ML <- refitML(fm1)
 REMLcrit(fm1)
@@ -6,7 +6,7 @@ deviance(fm1ML)
 deviance(fm1,REML=FALSE)  ## FIXME: not working yet (NA)
 deviance(fm1,REML=TRUE)
 
-## from lme4.0
+## from lmeAddSigma.0
 oldvals <- c(REML=1743.6282722424, ML=1751.98581103058)
 ## leave out ML values for REML fits for now ...
 stopifnot(

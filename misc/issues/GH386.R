@@ -1,4 +1,4 @@
-require(lme4)
+require(lmeAddSigma)
 
 dds <- data.frame(f=factor(rep(1:20,each=20)))
 dds$y <- suppressMessages(simulate(~1+(1|f),

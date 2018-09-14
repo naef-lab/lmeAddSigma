@@ -1,4 +1,4 @@
-#### https://github.com/lme4/lme4/issues/162
+#### https://github.com/lmeAddSigma/lmeAddSigma/issues/162
 
 dat <- data.frame(sample   = gl(6, 12,    labels=formatC(10^(1:6), format="d")),
                   operator = gl(2, 6, 72, labels=c("AVR","SCF")),
@@ -57,7 +57,7 @@ xyplot(log10(y) ~ log10(as.numeric(as.character(sample))), dat)
 ## 2) 'operator' (with only 2 levels) as random effect is also a bit extreme
 
 
-library(lme4)
+library(lmeAddSigma)
 fitAV3 <- lmer(log10(y) ~ (1|sample)+(1|day)+(1|operator)+
                (1|day:sample)+(1|day:operator)+(1|sample:operator)+
                (1|day:sample:operator),
@@ -153,7 +153,7 @@ confint(pr.AV3, level = 0.80) # still has the same 3  (0, Inf) intervals
 
 vc3 <- VarCorr(fitAV3)
 print(vc3, comp=c("Std.Dev","Var"), formatter=formatC)
-noquote(cbind(lme4:::formatVC(vc3, formatter=formatC),
+noquote(cbind(lmeAddSigma:::formatVC(vc3, formatter=formatC),
               format(confint(pr.AV3)[-9,], digits=4, drop0trailing=TRUE)))
 ##                                                               __manually__
 ##  Groups              Name         Std.Dev.   2.5 %   97.5 %   name{profile}

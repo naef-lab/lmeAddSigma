@@ -427,7 +427,7 @@ getGroups.lmList4 <- function(object, ...) object@groups
 ### All the other "lmList4" S3 methods are imported from  nmle :
 ##
 .ns.nlme <- asNamespace("nlme")
-.ns.lme4 <- environment() ## == asNamespace("lme4") during build/load
+.ns.lmeAddSigma <- environment() ## == asNamespace("lmeAddSigma") during build/load
 ##
 ## To do this, we need to make them use *our* namespace, e.g. to use our  pooledSD()
 ## However, then we get from codetools :
@@ -452,7 +452,7 @@ for(fn in c("fitted", "fixef", "logLik", "pairs", "plot", "predict",
             ## "print", <- have our own show()
            "qqnorm", "ranef", "residuals", "summary")) {
     meth <- get(paste(fn, "lmList",  sep="."), envir = .ns.nlme, inherits=FALSE)
-    environment(meth) <- .ns.lme4 # e.g. in order to use *our* pooledSD()
+    environment(meth) <- .ns.lmeAddSigma # e.g. in order to use *our* pooledSD()
     assign(paste(fn, "lmList4", sep="."), meth)
 }
 rm(fn)

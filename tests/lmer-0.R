@@ -1,4 +1,4 @@
-require(lme4)
+require(lmeAddSigma)
 source(system.file("test-tools-1.R", package = "Matrix"))# identical3() etc
 
 ## Check that quasi families throw an error
@@ -45,9 +45,9 @@ showProc.time() #
 
 ## From: Stephane Laurent
 ## To:   r-sig-mixed-models@..
-## "crash with the latest update of lme4"
+## "crash with the latest update of lmeAddSigma"
 ##
-## .. example for which lmer() crashes with the last update of lme4 ...{R-forge},
+## .. example for which lmer() crashes with the last update of lmeAddSigma ...{R-forge},
 ## .. but not with version CRAN version (0.999999-0)
 lsDat <- data.frame(
                   Operator = as.factor(rep(1:5, c(3,4,8,8,8))),

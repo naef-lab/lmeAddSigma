@@ -1,4 +1,4 @@
-require(lme4)
+require(lmeAddSigma)
 # sorry for fitting yet another sleepstudy model in the tests
 m <- lmer(Reaction ~ Days + (Days | Subject), sleepstudy)
 ST <- getME(m, "ST")$Subject

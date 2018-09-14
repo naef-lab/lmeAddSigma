@@ -1,8 +1,8 @@
-## https://github.com/lme4/lme4/issues/303#issuecomment-104406146
+## https://github.com/lmeAddSigma/lmeAddSigma/issues/303#issuecomment-104406146
 
 ## Related comments from Russ Lenth:
 
-## > Looking at the code in lme4 related to merMod objects, I noticed that
+## > Looking at the code in lmeAddSigma related to merMod objects, I noticed that
 ## > there did not appear to be any directly recoverable information on the
 ## > nature of rank deficiency when it exists. So I did a little test, and
 ## > sure enough, I verified that there's a problem...
@@ -18,7 +18,7 @@ excl
 
 ## Fit a model, excluding the identified subset
 
-library("lme4")
+library("lmeAddSigma")
 Oats.lmer <-  lmer(yield ~ Variety * factor(nitro) + (1|Block/Variety),
                    data = Oats, subset = -excl)
 ## "message":

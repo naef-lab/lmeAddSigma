@@ -1,5 +1,5 @@
 ## From: Ben Bolker <notifications@github.com>
-## Subject: [lme4] interaction between glmer.nb and effects package (#318)
+## Subject: [lmeAddSigma] interaction between glmer.nb and effects package (#318)
 ## Date: Thu, 23 Jul 2015 07:28:14 -0700
 
 ## Let's see if we can hack this on our side by putting `th` somewhere in the environment: if not we may need to ask the `effects` maintainers for help.
@@ -8,7 +8,7 @@
 set.seed(101)
 dd <- expand.grid(f1=factor(1:3),f2=factor(1:3),g=1:10,rep=1:10)
 dd$y <- rnbinom(nrow(dd), mu=2, size=0.5)
-library(lme4)
+library(lmeAddSigma)
 m.nb <- glmer.nb(y ~ f1*f2 + (1|g), data=dd, verbose = 2) ## >> *TONS* of output
 ##                                         ^^^^^^^^^^^^ new
 ## MM: here (inside glmer.nb !), we need to replace 'th' by the number
@@ -21,7 +21,7 @@ plot(m.nb, g ~ resid(.))
 ## _AND_  issue #176 :
 m2 <- update(m.nb)
 ## but the error here is more strange: 'verbose' ?????
-## Error in lme4::glFormula(formula = y ~ f1 * f2 + (1 | g), data = ..2,  :
+## Error in lmeAddSigma::glFormula(formula = y ~ f1 * f2 + (1 | g), data = ..2,  :
 ##   object 'verbose' not found
 ##
 ## specifying 'verbose' explitly helps

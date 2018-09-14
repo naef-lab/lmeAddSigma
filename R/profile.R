@@ -329,9 +329,9 @@ profile.merMod <- function(fitted,
         } else if (have_snow) {
             if (is.null(cl)) {
                 cl <- parallel::makePSOCKcluster(rep("localhost", ncpus))
-                ## explicit export of the lme4 namespace since most FUNs will probably
+                ## explicit export of the lmeAddSigma namespace since most FUNs will probably
                 ## use some of them
-                parallel::clusterExport(cl, varlist=getNamespaceExports("lme4"))
+                parallel::clusterExport(cl, varlist=getNamespaceExports("lmeAddSigma"))
                 if(RNGkind()[1L] == "L'Ecuyer-CMRG")
                     parallel::clusterSetRNGStream(cl)
                 pres <- parallel::parLapply(cl, seqnvp, FUN)
@@ -390,7 +390,7 @@ profile.merMod <- function(fitted,
             nres[1, ] <- pres[2, ] <- fe.zeta(est + delta * std)
             poff <- nvp + 1L + j
             ## Workaround R bug [rbind2() is S4 generic; cannot catch warnings in its arg]
-            ## see lme4 GH issue #304
+            ## see lmeAddSigma GH issue #304
             upperf <- fillmat(pres, -Inf, Inf, fe.zeta, poff)
             lowerf <- fillmat(nres, -Inf, Inf, fe.zeta, poff)
             bres <- as.data.frame(unique(rbind2(upperf, lowerf)))
@@ -793,7 +793,7 @@ confint.thpr <- function(object, parm, level = 0.95, zeta,
 ## FIXME: make bootMer more robust; make profiling more robust;
 ## more warnings; documentation ...
 
-##' Compute confidence intervals on the parameters of an lme4 fit
+##' Compute confidence intervals on the parameters of an lmeAddSigma fit
 ##' @param object a fitted [ng]lmer model
 ##' @param parm parameters (specified by integer position)
 ##' @param level confidence level

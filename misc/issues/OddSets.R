@@ -1,12 +1,12 @@
 L <- load("OddSets1.Rdata")
-library(lme4)
+library(lmeAddSigma)
 
 ## replicate results
 selmod_data <- lapply(selmod,"[[","data")
 mod_list <- lapply(selmod_data,lmer,
                    formula=dQTcF ~ C + TP + trt -1 +(1 + C|id))
 sapply(mod_list,function(x) fixef(x)["C"])
-source(system.file("utils", "allFit.R", package="lme4"))
+source(system.file("utils", "allFit.R", package="lmeAddSigma"))
 ## ugh. Having used lapply(), have to hack the @call slot so update() works ...
 ## would be easier to try to fix this and/or use a for loop in the first
 ## place

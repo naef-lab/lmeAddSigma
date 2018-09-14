@@ -1,4 +1,4 @@
-library(lme4)
+library(lmeAddSigma)
 n <- nrow(sleepstudy)
 v <- rpois(n,1) + 1
 w <- 1/v

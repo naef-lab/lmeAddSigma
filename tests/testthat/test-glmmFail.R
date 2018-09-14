@@ -1,7 +1,7 @@
 library("testthat")
-library("lme4")
+library("lmeAddSigma")
 
-source(system.file("testdata/lme-tst-funs.R", package="lme4", mustWork=TRUE))
+source(system.file("testdata/lme-tst-funs.R", package="lmeAddSigma", mustWork=TRUE))
 ##-> gSim(), a general simulation function ...
 
 set.seed(101)

@@ -1,13 +1,13 @@
-library(lme4)
+library(lmeAddSigma)
 set.seed(101)
                                         # simulation formula
 form <- y ~ x + (x|g)
                                         # simulation parameters
-tmpPar <- lme4:::mkParsTemplate(form)
+tmpPar <- lmeAddSigma:::mkParsTemplate(form)
 tmpPar$beta[] <- c(5, -1)
 tmpPar$sigma <- 1
                                         # simulation design
-tmpDat <- lme4:::mkDataTemplate(form, nGrp = 100, nPerGrp = 20, rfunc = rnorm)
+tmpDat <- lmeAddSigma:::mkDataTemplate(form, nGrp = 100, nPerGrp = 20, rfunc = rnorm)
 tmpDat$y <- abs(tmpDat$y)
                                         # 100 simulations
 sims <- simulate(form, nsim = 100, newdata = tmpDat, family = Gamma, newparams = tmpPar)

@@ -4,14 +4,14 @@
 //
 // Copyright (C) 2011-2012 Douglas Bates, Martin Maechler and Ben Bolker
 //
-// This file is part of lme4.
+// This file is part of lmeAddSigma.
 
 #ifndef LME4_RESPMODULE_H
 #define LME4_RESPMODULE_H
 
 #include "glmFamily.h"
 
-namespace lme4 {
+namespace lmeAddSigma {
     typedef Eigen::Map<Eigen::VectorXd> MVec;
 
     using Rcpp::CharacterVector;

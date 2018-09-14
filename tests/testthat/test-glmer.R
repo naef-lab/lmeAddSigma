@@ -1,5 +1,5 @@
 library("testthat")
-library("lme4")
+library("lmeAddSigma")
 
 testLevel <- if (nzchar(s <- Sys.getenv("LME4_TEST_LEVEL")))
                  as.numeric(s) else 1
@@ -133,7 +133,7 @@ if(FALSE) { ## Hadley broke this
                    "instead of passing a list of class")
 }
     ##
-    load(system.file("testdata","radinger_dat.RData",package="lme4"))
+    load(system.file("testdata","radinger_dat.RData",package="lmeAddSigma"))
     mod <- glmer(presabs~predictor+(1|species),family=binomial,
                  radinger_dat)
     expect_is(mod,"merMod")
@@ -175,7 +175,7 @@ if(FALSE) { ## Hadley broke this
 
     ##
     if(testLevel > 1) {
-        load(system.file("testdata","mastitis.rda",package="lme4"))
+        load(system.file("testdata","mastitis.rda",package="lmeAddSigma"))
         t1 <- system.time(g1 <-
                           glmer(NCM ~ birth + calvingYear + (1|sire) + (1|herd),
                                 mastitis, poisson,
@@ -225,7 +225,7 @@ if(FALSE) { ## Hadley broke this
     if(getRversion() > "3.0.0") {
         ## saved fits are not safe with old R versions
         L <- load(system.file("testdata","polytomous_vcov_ex.RData",
-                              package="lme4", mustWork=TRUE))
+                              package="lmeAddSigma", mustWork=TRUE))
         expect_warning(vcov(polytomous_vcov_ex),"falling back to var-cov")
     }
 
@@ -237,7 +237,7 @@ if(FALSE) { ## Hadley broke this
 
     ## test convergence warnings
     L <- load(system.file("testdata","gopherdat2.RData",
-                          package="lme4", mustWork=TRUE))
+                          package="lmeAddSigma", mustWork=TRUE))
     g0 <- glmer(shells~prev + (1|Site)+offset(log(Area)),
                 family=poisson, data=Gdat)
     ## fit year as factor: OK
@@ -302,7 +302,7 @@ if(FALSE) { ## Hadley broke this
     }
 
     ## bad start case
-    load(system.file("testdata","fakesim.RData",package="lme4"))
+    load(system.file("testdata","fakesim.RData",package="lmeAddSigma"))
     rfit <- glmer(Inew/S ~ R0-1 + offset(log(I/N)) + (1|R0:trial) 
         , family=binomial(link=cloglog)
 	, data=dat

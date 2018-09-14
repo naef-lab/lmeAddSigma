@@ -1,4 +1,4 @@
-## polytomous package example breaks with current release of lme4
+## polytomous package example breaks with current release of lmeAddSigma
 ## it's arguably a very dodgy example, but it is still worth trying
 ## to diagnose/investigate what's going on here ...
 ##
@@ -10,26 +10,26 @@ if (FALSE) {
     think.polytomous.lmer1 <-
         polytomous(Lexeme ~ Agent + Patient + (1|Register),
                    data=think, heuristic="poisson.reformulation")
-    ## lme4 2013-03-20: works with warning "falling back to var-cov .. RX"
+    ## lmeAddSigma 2013-03-20: works with warning "falling back to var-cov .. RX"
 
     ## extract V, object from browser mode (<-- ???)
     form <- formula(object)
     data.poisson <- model.frame(object)
-    library(lme4.0)
-    ## lme4.0 fit:
+    library(lmeAddSigma.0)
+    ## lmeAddSigma.0 fit:
     m0 <- glmer(form,data=data.poisson,family=poisson)
-    ## lme4 fit (vcov.merMod fails):
+    ## lmeAddSigma fit (vcov.merMod fails):
     m1 <- object
     save("m0","m1","V","form","data.poisson",file="polytomous_test.RData")
 }
 ## start here ...
 load("polytomous_test.RData")
 ## load both old & new versions so we can make comparisons
-library(lme4)
-library(lme4.0)
-## full parameter set for lme4.0 and lme4 fits
+library(lmeAddSigma)
+library(lmeAddSigma.0)
+## full parameter set for lmeAddSigma.0 and lmeAddSigma fits
 m0parms <- c(getME(m0,"theta"),fixef(m0))
-m1parms <- c(lme4::getME(m1,"theta"),fixef(m1))
+m1parms <- c(lmeAddSigma::getME(m1,"theta"),fixef(m1))
 stopifnot(identical(names(m1parms),
                     names(m0parms)))
 length(m0parms)     ## 50 parameters
@@ -49,7 +49,7 @@ plot(m0parms,m1parms,col=rep(2:1,c(2,48)))
 abline(a=0,b=1)
 
 ## test parameter sets in 'new' deviance function
-dd <- lme4::glmer(form,data.poisson,family=poisson,devFunOnly=TRUE)
+dd <- lmeAddSigma::glmer(form,data.poisson,family=poisson,devFunOnly=TRUE)
 dd(m0parms)
 dd(m1parms)  ## m1parms are supposedly MUCH better ...
 

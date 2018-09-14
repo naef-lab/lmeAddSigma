@@ -1,6 +1,6 @@
 ## from Github #231
 
-library(lme4)
+library(lmeAddSigma)
 full_mod1 <- glmer(TICKS ~ YEAR+scale(HEIGHT)+(1|LOCATION/BROOD/INDEX),
                    family="poisson", data=grouseticks)
 
@@ -11,7 +11,7 @@ simTICKS.tab <- simulate(full_mod1, nsim=2, seed=12345)
 
 r1 <- refit(full_mod1,simTICKS.tab[[1]])
 r2 <- refit(full_mod1,simTICKS.tab[[2]],verbose=100) ## fails
-debug(lme4:::refit.merMod)
+debug(lmeAddSigma:::refit.merMod)
 load("devfunUp.RData")  ## contains ff, updated devfun from inside refit
 ff2 <- update(full_mod1,devFunOnly=TRUE)
 fitpars <- unlist(getME(full_mod1,c("theta","fixef")))

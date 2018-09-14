@@ -1,4 +1,4 @@
-stopifnot(require("testthat"), require("lme4"))
+stopifnot(require("testthat"), require("lmeAddSigma"))
 
 set.seed(101)
 n <- 500
@@ -28,31 +28,31 @@ test_that("dotplot_ranef", {
     expect_is(as.data.frame(rr0),"data.frame")
 })
 
-test_that("Dyestuff consistent with lme4.0", {
-    lme4.0condVarDyestuff <- c(362.3583, 362.3583, 362.3583, 362.3583, 362.3583, 362.3583)
+test_that("Dyestuff consistent with lmeAddSigma.0", {
+    lmeAddSigma.0condVarDyestuff <- c(362.3583, 362.3583, 362.3583, 362.3583, 362.3583, 362.3583)
     fm <- lmer(Yield ~ 1|Batch, Dyestuff, REML=FALSE)
-    lme4condVarDyestuff <- as.numeric(attr(ranef(fm,condVar=TRUE)$Batch,"postVar"))
-    expect_equal(lme4.0condVarDyestuff, lme4condVarDyestuff, tolerance = 1e-3)
+    lmeAddSigmacondVarDyestuff <- as.numeric(attr(ranef(fm,condVar=TRUE)$Batch,"postVar"))
+    expect_equal(lmeAddSigma.0condVarDyestuff, lmeAddSigmacondVarDyestuff, tolerance = 1e-3)
 })
           
 
-test_that("sleepstudy consistent with lme4.0", {
-        lme4.0condVarsleepstudy <- matrix(c(145.71273, -21.440414,
+test_that("sleepstudy consistent with lmeAddSigma.0", {
+        lmeAddSigma.0condVarsleepstudy <- matrix(c(145.71273, -21.440414,
                                             -21.44041,   5.310927), 2, 2)
         fm <- lmer(Reaction ~ Days + (Days | Subject), sleepstudy)
-        lme4condVarsleepstudy <- attr(ranef(fm,condVar=TRUE)$Subject,"postVar")[,,1]
-        expect_equal(lme4.0condVarsleepstudy, lme4condVarsleepstudy, tolerance = 1e-4)
+        lmeAddSigmacondVarsleepstudy <- attr(ranef(fm,condVar=TRUE)$Subject,"postVar")[,,1]
+        expect_equal(lmeAddSigma.0condVarsleepstudy, lmeAddSigmacondVarsleepstudy, tolerance = 1e-4)
 })
       
 
-test_that("cbpp consistent with lme4.0", {
-    lme4.0condVarcbpp <- c(0.12128867, 0.13363275, 0.08839850, 0.17337928, 0.12277914, 0.14436663,
+test_that("cbpp consistent with lmeAddSigma.0", {
+    lmeAddSigma.0condVarcbpp <- c(0.12128867, 0.13363275, 0.08839850, 0.17337928, 0.12277914, 0.14436663,
                            0.10658333, 0.10309812, 0.21289738, 0.13740279, 0.09555677, 0.19460241,
                            0.14808316, 0.12631006, 0.15816769)
     gm <- glmer(cbind(incidence, size - incidence) ~ period + (1 | herd),
                 data = cbpp, family = binomial)
-    lme4condVarcbpp <- as.numeric(attr(ranef(gm,condVar=TRUE)$herd,"postVar"))
-    expect_equal(lme4.0condVarcbpp, lme4condVarcbpp, tolerance = 1e-3)
+    lmeAddSigmacondVarcbpp <- as.numeric(attr(ranef(gm,condVar=TRUE)$herd,"postVar"))
+    expect_equal(lmeAddSigma.0condVarcbpp, lmeAddSigmacondVarcbpp, tolerance = 1e-3)
 })
 
 test_that("multiple terms per factor", {

@@ -1,10 +1,10 @@
 library("testthat")
-library("lme4")
+library("lmeAddSigma")
 
 context("Utilities (including *non*-exported ones")
 
 test_that("namedList", {
-    nList <- lme4:::namedList
+    nList <- lmeAddSigma:::namedList
     a <- b <- c <- 1
     expect_identical(nList(a,b,c),  list(a = 1, b = 1, c = 1))
     expect_identical(nList(a,b,d=c),list(a = 1, b = 1, d = 1))
@@ -12,11 +12,11 @@ test_that("namedList", {
 })
 
 test_that("Var-Cov factor conversions", { ## from ../../R/vcconv.R
-    mlist2vec <- lme4:::mlist2vec
-    Cv_to_Vv <- lme4:::Cv_to_Vv
-    Cv_to_Sv <- lme4:::Cv_to_Sv
-    Sv_to_Cv <- lme4:::Sv_to_Cv
-    Vv_to_Cv <- lme4:::Vv_to_Cv
+    mlist2vec <- lmeAddSigma:::mlist2vec
+    Cv_to_Vv <- lmeAddSigma:::Cv_to_Vv
+    Cv_to_Sv <- lmeAddSigma:::Cv_to_Sv
+    Sv_to_Cv <- lmeAddSigma:::Sv_to_Cv
+    Vv_to_Cv <- lmeAddSigma:::Vv_to_Cv
     ##
     set.seed(1); cvec1 <- sample(10, 6)
     v1 <- Cv_to_Vv(cvec1)
@@ -36,7 +36,7 @@ test_that("Var-Cov factor conversions", { ## from ../../R/vcconv.R
 })
 
 test_that("nobar", {
-    rr <- lme4:::RHSForm
+    rr <- lmeAddSigma:::RHSForm
     expect_equal(nobars(y~1+(1|g)),                      y~1)
     expect_equal(nobars(y~1|g),                          y~1)
     expect_equal(nobars(y~1+(1||g)),                     y~1)

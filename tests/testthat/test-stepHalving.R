@@ -1,6 +1,6 @@
-library(lme4)
+library(lmeAddSigma)
 library(testthat)
-load(system.file("testdata","survdat_reduced.Rda",package="lme4"))
+load(system.file("testdata","survdat_reduced.Rda",package="lmeAddSigma"))
 
 test_that('Step-halving works properly', {
   # this example is known to require step-halving (or at least has in the past

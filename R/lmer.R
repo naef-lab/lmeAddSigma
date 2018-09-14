@@ -20,15 +20,15 @@ lmer <- function(formula, data=NULL, REML = TRUE,
     }
     if (!is.null(list(...)[["family"]])) {
        warning("calling lmer with 'family' is deprecated; please use glmer() instead")
-       mc[[1]] <- quote(lme4::glmer)
+       mc[[1]] <- quote(lmeAddSigma::glmer)
        if(missCtrl) mc$control <- glmerControl()
        return(eval(mc, parent.frame(1L)))
     }
     mc$control <- control ## update for  back-compatibility kluge
 
-    ## https://github.com/lme4/lme4/issues/50
+    ## https://github.com/lmeAddSigma/lmeAddSigma/issues/50
     ## parse data and formula
-    mc[[1]] <- quote(lme4::lFormula)
+    mc[[1]] <- quote(lmeAddSigma::lFormula)
     lmod <- eval(mc, parent.frame(1L))
     mcout$formula <- lmod$formula
     lmod$formula <- NULL
@@ -60,7 +60,7 @@ lmer <- function(formula, data=NULL, REML = TRUE,
                     ctrl = control$checkConv,
                     lbound=environment(devfun)$lower)
     mkMerMod(environment(devfun), opt, lmod$reTrms, fr = lmod$fr,
-             mc = mcout, lme4conv=cc) ## prepare output
+             mc = mcout, lmeAddSigmaconv=cc) ## prepare output
 }## { lmer }
 
 
@@ -103,14 +103,14 @@ glmer <- function(formula, data=NULL, family = gaussian,
         ## redirect to lmer (with warning)
         warning("calling glmer() with family=gaussian (identity link) as a shortcut to lmer() is deprecated;",
                 " please call lmer() directly")
-        mc[[1]] <- quote(lme4::lmer)
+        mc[[1]] <- quote(lmeAddSigma::lmer)
         mc["family"] <- NULL            # to avoid an infinite loop
         return(eval(mc, parent.frame()))
     }
 
-    ## see https://github.com/lme4/lme4/issues/50
+    ## see https://github.com/lmeAddSigma/lmeAddSigma/issues/50
     ## parse the formula and data
-    mc[[1]] <- quote(lme4::glFormula)
+    mc[[1]] <- quote(lmeAddSigma::glFormula)
     glmod <- eval(mc, parent.frame(1L))
     mcout$formula <- glmod$formula
     glmod$formula <- NULL
@@ -187,7 +187,7 @@ glmer <- function(formula, data=NULL, family = gaussian,
 
     ## prepare output
     mkMerMod(environment(devfun), opt, glmod$reTrms, fr = glmod$fr,
-             mc = mcout, lme4conv=cc)
+             mc = mcout, lmeAddSigmaconv=cc)
 
 }## {glmer}
 
@@ -606,7 +606,7 @@ as.function.merMod <- function(x, ...) {
                          pp    = x@pp$copy(),
                          beta0 = x@beta,
                          u0   =  x@u),
-                    parent=as.environment("package:lme4"))
+                    parent=as.environment("package:lmeAddSigma"))
     ## FIXME: extract verbose [, maxit] and control
     mkdevfun(rho, getME(x, "devcomp")$dims[["nAGQ"]], ...)
 }
@@ -1670,7 +1670,7 @@ update.merMod <- function(object, formula., ..., evaluate = TRUE) {
 
 ###----- Printing etc ----------------------------
 
-## lme4.0, for GLMM had
+## lmeAddSigma.0, for GLMM had
 ## 'Generalized linear mixed model fit by the Laplace approximation'
 ## 'Generalized linear mixed model fit by the adaptive Gaussian Hermite approximation'
 ## so did *not* mention  "maximum likelihood" at all in the GLMM case
@@ -1750,7 +1750,7 @@ famlink <- function(object, resp = object@resp) {
 
 ##' @title Extract Log Likelihood, AIC, and related statics from a Fitted LMM
 ##' @param object a LMM model fit
-##' @param devianceFUN the function to be used for computing the deviance; should not be changed for  \pkg{lme4} created objects.
+##' @param devianceFUN the function to be used for computing the deviance; should not be changed for  \pkg{lmeAddSigma} created objects.
 ##' @param chkREML optional logical indicating \code{object} maybe a REML fit.
 ##' @param devcomp
 ##' @return a list with components \item{logLik} and \code{AICtab} where the first is \code{\link{logLik(object)}} and \code{AICtab} is a "table" of AIC, BIC, logLik, deviance, df.residual() values.
@@ -1801,7 +1801,7 @@ llikAIC <- function(object, devianceFUN = devCrit, chkREML = TRUE, devcomp = obj
     if(length(optinfo) == 0) return() # currently, e.g., from refitML()
     ## check all warning slots: print numbers of warnings (if any)
     cc <- optinfo$conv$opt
-    msgs <- unlist(optinfo$conv$lme4$messages)
+    msgs <- unlist(optinfo$conv$lmeAddSigma$messages)
     ## can't put nmsgs/nwarnings compactly into || expression
     ##   because of short-circuiting
     nmsgs <- length(msgs)
@@ -1809,7 +1809,7 @@ llikAIC <- function(object, devianceFUN = devCrit, chkREML = TRUE, devcomp = obj
     nwarnings <- length(warnings)
     if (cc > 0 || nmsgs > 0 || nwarnings > 0) {
         if (summary) {
-            cat(sprintf("convergence code %d; %d optimizer warnings; %d lme4 warnings",
+            cat(sprintf("convergence code %d; %d optimizer warnings; %d lmeAddSigma warnings",
                 cc,nmsgs,nwarnings),"\n")
         } else {
             cat(sprintf("convergence code: %d", cc),
@@ -1821,9 +1821,9 @@ llikAIC <- function(object, devianceFUN = devCrit, chkREML = TRUE, devcomp = obj
     }
 }
 
-##  options(lme4.summary.cor.max = 20)  --> ./hooks.R
+##  options(lmeAddSigma.summary.cor.max = 20)  --> ./hooks.R
 ##                                           ~~~~~~~~
-## was      .summary.cor.max <- 20    a lme4-namespace hidden global variable
+## was      .summary.cor.max <- 20    a lmeAddSigma-namespace hidden global variable
 
 ## This is modeled a bit after  print.summary.lm :
 ## Prints *both*  'mer' and 'merenv' - as it uses summary(x) mainly
@@ -1854,7 +1854,7 @@ print.summary.merMod <- function(x, digits = max(3, getOption("digits") - 3),
         ## do not show correlation when   summary(*, correlation=FALSE)  was used:
         hasCor <- !is.null(VC <- x$vcov) && !is.null(VC@factors$correlation)
         if(is.null(correlation)) { # default
-            cor.max <- getOption("lme4.summary.cor.max")
+            cor.max <- getOption("lmeAddSigma.summary.cor.max")
             correlation <- hasCor && p <= cor.max
             if(!correlation && p > cor.max) {
                 nam <- deparse(substitute(x))
@@ -2249,7 +2249,7 @@ mkVarCorr <- function(sc, cnms, nc, theta, nms) {
     ncseq <- seq_along(nc)
     thl <- split(theta, rep.int(ncseq, (nc * (nc + 1))/2))
     if(!all(nms == names(cnms))) ## the above FIXME
-        warning("nms != names(cnms)  -- whereas lme4-authors thought they were --\n",
+        warning("nms != names(cnms)  -- whereas lmeAddSigma-authors thought they were --\n",
                 "Please report!", immediate. = TRUE)
     ans <- lapply(ncseq, function(i)
               {
@@ -2378,7 +2378,7 @@ formatVC <- function(varcor, digits = max(3, getOption("digits") - 2),
 
 ##' @S3method summary merMod
 summary.merMod <- function(object,
-                           correlation = (p <= getOption("lme4.summary.cor.max")),
+                           correlation = (p <= getOption("lmeAddSigma.summary.cor.max")),
                            use.hessian = NULL,
                            ...)
 {
@@ -2582,7 +2582,7 @@ weights.merMod <- function(object, type = c("prior","working"), ...) {
     ## discrepancy is due to another instance of the general problem of
     ## reference class fields not being updated at the optimum, then this
     ## could cause real problems.  see for example:
-    ## https://github.com/lme4/lme4/issues/166
+    ## https://github.com/lmeAddSigma/lmeAddSigma/issues/166
 
 
     ## FIXME:  what to do about missing values (see stats:::weights.glm)?
@@ -2704,7 +2704,7 @@ optwrap <- function(optimizer, fn, par, lower = -Inf, upper = Inf,
            )
     arglist <- list(fn = fn, par = par, lower = lower, upper = upper, control = control)
     ## optimx: must pass method in control (?) because 'method' was previously
-    ## used in lme4 to specify REML vs ML
+    ## used in lmeAddSigma to specify REML vs ML
     if (optName == "optimx") {
         if (is.null(method <- control$method))
             stop("must specify 'method' explicitly for optimx")

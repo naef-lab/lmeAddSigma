@@ -1,10 +1,10 @@
 ## this is the simpler version of the code for testing/exercising
-## https://github.com/lme4/lme4/issues/35
+## https://github.com/lmeAddSigma/lmeAddSigma/issues/35
 ## see also ../misc/issues/dynload.R for more complexity
-pkg <- so_name <- "lme4"; doUnload <- FALSE; doTest <- TRUE
+pkg <- so_name <- "lmeAddSigma"; doUnload <- FALSE; doTest <- TRUE
 ## pkg <- so_name <- "RcppEigen"; doUnload <- TRUE; doTest <- TRUE
-## need to deal with the fact that DLL name != package name for lme4.0 ...
-### pkg <- "lme4.0"; so_name <- "lme4"; doUnload <- TRUE
+## need to deal with the fact that DLL name != package name for lmeAddSigma.0 ...
+### pkg <- "lmeAddSigma.0"; so_name <- "lmeAddSigma"; doUnload <- TRUE
 instPkgs <- as.data.frame(installed.packages(),stringsAsFactors=FALSE)
 Load <- function() {
     library(pkg,character.only=TRUE)
@@ -31,7 +31,7 @@ tmpf <- function() {
 }
 test <- function() {
     if (doTest) {
-        if (pkg %in% c("lme4","lme4.0")) {
+        if (pkg %in% c("lmeAddSigma","lmeAddSigma.0")) {
             fm1 <- lmer(Reaction ~ Days + (Days|Subject), sleepstudy,
                         devFunOnly=TRUE)
         }

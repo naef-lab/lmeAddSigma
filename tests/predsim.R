@@ -1,6 +1,6 @@
 ## compare range, average, etc. of simulations to
 ## conditional and unconditional prediction
-library(lme4)
+library(lmeAddSigma)
 do.plot <- FALSE
 
 fm1 <- lmer(Reaction~Days+(1|Subject),sleepstudy)

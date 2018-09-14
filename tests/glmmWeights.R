@@ -1,7 +1,7 @@
-library(lme4)
+library(lmeAddSigma)
 library(testthat)
 
-source(system.file("testdata/lme-tst-funs.R", package="lme4", mustWork=TRUE))
+source(system.file("testdata/lme-tst-funs.R", package="lmeAddSigma", mustWork=TRUE))
 ##-> gSim(), a general simulation function ...
 
 ## hand-coded Pearson residuals {for  sumFun() }
@@ -70,7 +70,7 @@ expect_true(all(rel.diff(sumFun(g.b.2 )) < 1e-13))
 
 
 ## Many blocks of only 2 observations each - (but nicely balanced)
-## Want this "as" https://github.com/lme4/lme4/issues/47
+## Want this "as" https://github.com/lmeAddSigma/lmeAddSigma/issues/47
 ## (but it "FAILS" survival already):
 ##
 ## n2 = n/2 :

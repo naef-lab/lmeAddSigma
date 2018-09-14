@@ -1,7 +1,7 @@
 library("testthat")
-library("lme4")
+library("lmeAddSigma")
 L <- load(system.file("testdata", "lme-tst-fits.rda",
-                      package="lme4", mustWork=TRUE))
+                      package="lmeAddSigma", mustWork=TRUE))
 
 ## FIXME: should test for old R versions, skip reloading test data in that
 ## case?
@@ -236,7 +236,7 @@ test_that("bootMer", {
 
 context("confint_other")
 test_that("confint", {
-    load(system.file("testdata", "gotway_hessianfly.rda", package = "lme4"))
+    load(system.file("testdata", "gotway_hessianfly.rda", package = "lmeAddSigma"))
     ## generated via:
     ## gotway_hessianfly_fit <- glmer(cbind(y, n-y) ~ gen + (1|block),
     ##              data=gotway.hessianfly, family=binomial,
@@ -299,7 +299,7 @@ test_that("confint", {
     }
 
     badprof <- readRDS(system.file("testdata","badprof.rds",
-                                   package="lme4"))
+                                   package="lmeAddSigma"))
     expect_warning(cc <- confint(badprof), "falling back to linear")
     expect_equal(cc,
         structure(c(0, -1, 2.50856219044636, 48.8305727797906, NA, NA,

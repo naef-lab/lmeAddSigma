@@ -1,4 +1,4 @@
-library(lme4)
+library(lmeAddSigma)
 
 mySumm <- function(.) {
   s <- sigma(.)
@@ -20,7 +20,7 @@ fm2 <- lmer(angle ~ recipe * temperature + (1|recipe:replicate), cake)
 boo03 <- bootMer(fm2, mySumm, nsim = 10)
 boo04 <- bootMer(fm2, mySumm, nsim = 10, use.u = TRUE)
 
-if (lme4:::testLevel() > 1) {
+if (lmeAddSigma:::testLevel() > 1) {
     gm1 <- glmer(cbind(incidence, size - incidence) ~ period + (1 | herd),
                  data = cbpp, family = binomial)
     boo05 <- bootMer(gm1, mySumm, nsim = 10)
@@ -33,7 +33,7 @@ if (lme4:::testLevel() > 1) {
     boo03 <- bootMer(gm2, mySumm, nsim = 10)
     boo04 <- bootMer(gm2, mySumm, nsim = 10, use.u = TRUE)
 }
-load(system.file("testdata","culcita_dat.RData",package="lme4"))
+load(system.file("testdata","culcita_dat.RData",package="lmeAddSigma"))
 cmod <- glmer(predation~ttt+(1|block),family=binomial,data=culcita_dat)
 set.seed(101)
 ## FIXME: sensitive to step-halving PIRLS tests

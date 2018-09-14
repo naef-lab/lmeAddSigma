@@ -1,4 +1,4 @@
-library(lme4)
+library(lmeAddSigma)
 library(reshape2)
 library(dplyr)
 
@@ -54,7 +54,7 @@ mkReIndex <- function(object) {
 mkRanefTable <- function(object, saveCondVarMatrix = FALSE) {
     ## q table
     re <- getME(object, "b")
-    cv <- lme4:::condVar(object)
+    cv <- lmeAddSigma:::condVar(object)
     out <- 
         object %>%
             mkReIndex() %>%
@@ -105,9 +105,9 @@ mkRanefTable(fm2)
     mkRanefTable() %>%
     filter(grepl("331", level)))
 
-cv1 <- lme4:::condVar(fm1)[ii1$index, ii1$index]
+cv1 <- lmeAddSigma:::condVar(fm1)[ii1$index, ii1$index]
 dimnames(cv1) <- list(ii1$variable, ii1$variable)
-cv2 <- lme4:::condVar(fm2)[ii2$index, ii2$index]
+cv2 <- lmeAddSigma:::condVar(fm2)[ii2$index, ii2$index]
 dimnames(cv2) <- list(ii2$variable, ii2$variable)
 cv1
 cv2

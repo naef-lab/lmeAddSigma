@@ -1,4 +1,4 @@
-library(lme4)
+library(lmeAddSigma)
 source(system.file("test-tools-1.R", package = "Matrix"), keep.source = FALSE)
 ## N.B. is.all.equal4() and assert.EQ() use 'tol', not 'tolerance' 
 
@@ -17,7 +17,7 @@ lmerCtrl.optx <- function(method, ...)
 glmerCtrl.optx <- function(method, ...)
     glmerControl(optimizer="optimx", ..., optCtrl=list(method=method))
 
-(testLevel <- lme4:::testLevel())
+(testLevel <- lmeAddSigma:::testLevel())
 
 ## FAILS on Windows (on r-forge only, not win-builder)... 'function is infeasible at initial parameters'
 ## (can we test whether we are on r-forge??)

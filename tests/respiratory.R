@@ -1,8 +1,8 @@
 ## Data originally from Davis 1991 Stat. Med., as packaged in geepack
 ## and transformed (center, id -> factor, idctr created, levels labeled)
-library(lme4)
+library(lmeAddSigma)
 
-load(system.file("testdata","respiratory.RData",package="lme4"))
+load(system.file("testdata","respiratory.RData",package="lmeAddSigma"))
 m_glmer_4.L <- glmer(outcome~center+treat+sex+age+baseline+(1|idctr),
                      family=binomial,data=respiratory)
 

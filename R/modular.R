@@ -334,7 +334,7 @@ lFormula <- function(formula, data=NULL, REML = TRUE,
     do.call(checkArgs, c(list("lmer"), l...))
     if (!is.null(list(...)[["family"]])) {
         ## lmer(...,family=...); warning issued within checkArgs
-        mc[[1]] <- quote(lme4::glFormula)
+        mc[[1]] <- quote(lmeAddSigma::glFormula)
         if (missing(control)) mc[["control"]] <- glmerControl()
         return(eval(mc, parent.frame()))
     }
@@ -623,7 +623,7 @@ glFormula <- function(formula, data=NULL, family = gaussian,
         family <- get(family, mode = "function", envir = parent.frame(2))
     if( is.function(family)) family <- family()
     if (isTRUE(all.equal(family, gaussian()))) {
-        mc[[1]] <- quote(lme4::lFormula)
+        mc[[1]] <- quote(lmeAddSigma::lFormula)
         mc["family"] <- NULL            # to avoid an infinite loop
         return(eval(mc, parent.frame()))
     }

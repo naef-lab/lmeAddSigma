@@ -1,4 +1,4 @@
-library("lme4")
+library("lmeAddSigma")
 
 set.seed(101)
 dd <- expand.grid(f1 = factor(1:3),
@@ -13,7 +13,7 @@ dd$y <- rnbinom(nrow(dd), mu = mu, size = 0.5)
 m.base <- glmer(y ~ f1*f2 + (1|g), data=dd, family=poisson)
 all.equal(m.base@beta,(m.base.r <- refit(m.base))@beta)  ## OK
 
-th <- lme4:::est_theta(m.base,limit=20,eps=1e-4,trace=FALSE)
+th <- lmeAddSigma:::est_theta(m.base,limit=20,eps=1e-4,trace=FALSE)
 th0 <- structure(0.482681268108477, SE = 0.0244825021248148)
 th1 <- structure(0.482681277470945)
 th2 <- 0.482681268108477

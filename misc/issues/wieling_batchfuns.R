@@ -20,12 +20,12 @@ fullForm <- PronDistStdDutch.c ~ Geo + PopSize.log_residGeo.z +
     (1 | Transcriber)
 
 fitLme4.0 <- function(data=subdat) {
-    tval <- system.time(fit <- lme4.0::lmer(fullForm, data=data))
+    tval <- system.time(fit <- lmeAddSigma.0::lmer(fullForm, data=data))
     list(time=tval, fit=fit)
 }
 
 fitLme4 <- function(optCtrl=list(), optimizer, data=subdat) {
-    tval <- system.time(fit <- lme4::lmer(fullForm,data=data,
+    tval <- system.time(fit <- lmeAddSigma::lmer(fullForm,data=data,
           control=lmerControl(optimizer=optimizer, optCtrl=optCtrl)))
     list(time=tval, fit=fit)
 }

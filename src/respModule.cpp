@@ -2,12 +2,12 @@
 //
 // Copyright (C) 2011-2012 Douglas Bates, Martin Maechler and Ben Bolker
 //
-// This file is part of lme4.
+// This file is part of lmeAddSigma.
 
 #include "respModule.h"
 #include <cmath>
 
-namespace lme4 {
+namespace lmeAddSigma {
     using Eigen::ArrayXd;
     using Eigen::VectorXd;
 

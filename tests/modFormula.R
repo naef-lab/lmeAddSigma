@@ -1,7 +1,7 @@
-library(lme4)
+library(lmeAddSigma)
 library(testthat)
 
-.get.checkingOpts <- lme4:::.get.checkingOpts
+.get.checkingOpts <- lmeAddSigma:::.get.checkingOpts
 stopifnot(identical(
     .get.checkingOpts(
     c("CheckMe", "check.foo", "check.conv.1", "check.rankZ", "check.rankX"))
@@ -10,10 +10,10 @@ stopifnot(identical(
 lmod <- lFormula(Reaction ~ Days + (Days|Subject), sleepstudy)
 devfun <- do.call(mkLmerDevfun, lmod)
 opt <- optimizeLmer(devfun)
-cc <- lme4:::checkConv(attr(opt,"derivs"), opt$par, ctrl = lmerControl()$checkConv,
+cc <- lmeAddSigma:::checkConv(attr(opt,"derivs"), opt$par, ctrl = lmerControl()$checkConv,
                 lbound=environment(devfun)$lower)
 fm1 <- mkMerMod(environment(devfun), opt, lmod$reTrms, fr = lmod$fr,
-                lme4conv=cc)
+                lmeAddSigmaconv=cc)
 fm2 <- lmer(Reaction ~ Days + (Days|Subject), sleepstudy)
 
 ## basic equivalence

@@ -1,4 +1,4 @@
-library(lme4)
+library(lmeAddSigma)
 
 options(nwarnings = 1000)
 set.seed(17)
@@ -138,7 +138,7 @@ noquote(s3fn <- s3fn[s3fn != "print"])# <-- it is show() not print() that works
 ## [1] coef    confint fitted fixef     formula logLik  pairs  plot
 ## [9] predict qqnorm  ranef  residuals sigma   summary update
 
-## In lme4 1.1-7 (July 2014), only these worked:
+## In lmeAddSigma 1.1-7 (July 2014), only these worked:
 ##  coef(), confint(), formula(), logLik(), summary(), update()
 
 ## pairs() is excluded for fm3.1 which has only intercept:

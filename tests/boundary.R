@@ -3,13 +3,13 @@
 ## only case where we get stuck; either optimizer=bobyqa or
 ## restart_edge=TRUE (default) works
 
-library(lme4)
+library(lmeAddSigma)
 library(testthat)
 
 if(!dev.interactive(orNone=TRUE)) pdf("boundary_plots.pdf")
 
 ## Stephane Laurent:
-dat <- read.csv(system.file("testdata","dat20101314.csv", package="lme4"))
+dat <- read.csv(system.file("testdata","dat20101314.csv", package="lmeAddSigma"))
 
 fit   <- lmer(y ~ (1|Operator)+(1|Part)+(1|Part:Operator), data=dat,
 	      control= lmerControl(optimizer="Nelder_Mead"))
@@ -27,7 +27,7 @@ stopifnot(all.equal(getME(fit,  "theta") -> th.f,
 
 ## Manuel Koller
 
-source(system.file("testdata", "koller-data.R", package="lme4"))
+source(system.file("testdata", "koller-data.R", package="lmeAddSigma"))
 ldata <- getData(13)
 ## old (backward compatible/buggy)
 fm4  <- lmer(y ~ (1|Var2), ldata, control=lmerControl(optimizer="Nelder_Mead",
@@ -141,7 +141,7 @@ expect_warning(splom(p5),"unreliable for singular fits")
 p5B <- profile(m5, signames=FALSE) # -> bobyqa convergence warning (code 3)
 expect_warning(splom(p5B), "unreliable for singular fits")
 
-if(lme4:::testLevel() >= 2) { ## avoid failure to warn
+if(lmeAddSigma:::testLevel() >= 2) { ## avoid failure to warn
     ## Case #2: near-boundary estimate, but boundary.tol can't fix it
     m16 <- tmpplot(16)
     ## sometimes[2014-11-11] fails (??) :

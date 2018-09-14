@@ -3,15 +3,15 @@
 
 ## don't actually use gotway_hessianfly_fit or gotway_hessianfly_prof,
 ## so we should be OK even with R< 3.0.1
-load(system.file("testdata","gotway_hessianfly.rda",package="lme4"))
+load(system.file("testdata","gotway_hessianfly.rda",package="lmeAddSigma"))
 # Block random.  See Glimmix manual, output 1.18.
 # Note: (Different parameterization)
 
-## require("lme4.0")
+## require("lmeAddSigma.0")
 ## fit2 <- glmer(cbind(y, n-y) ~ gen + (1|block), data=dat, family=binomial)
 ## params <- list(fixef=fixef(fit2),theta=getME(fit2,"theta"))
-## detach("package:lme4.0")
-lme4.0fit <- structure(list(fixef = structure(c(1.50345713031203, -0.193853259383803, 
+## detach("package:lmeAddSigma.0")
+lmeAddSigma.0fit <- structure(list(fixef = structure(c(1.50345713031203, -0.193853259383803, 
 -0.540808391060274, -1.43419379979154, -0.203701042949808, -0.978322555343941, 
 -0.604078624475678, -1.67742449813309, -1.39842466673692, -0.681709344788684, 
 -1.46295367186169, -1.45908310198959, -3.55285756517073, -2.50731975980307, 
@@ -22,7 +22,7 @@ lme4.0fit <- structure(list(fixef = structure(c(1.50345713031203, -0.19385325938
 "theta"))
 
 ## start doesn't work because we don't get there
-library(lme4)
+library(lmeAddSigma)
 m1 <- glmer(cbind(y, n-y) ~ gen + (1|block), data=gotway.hessianfly,
             family=binomial)
 m1B <- update(m1,control=glmerControl(optimizer="bobyqa"))
@@ -31,13 +31,13 @@ max(abs(m1B@optinfo$derivs$gradient)) ## 2.03e-5
 abs(m1@optinfo$derivs$gradient)/abs(m1B@optinfo$derivs$gradient)
 ## bobyqa gets gradients *at least* 1.64* lower
 
-lme4fit <- list(fixef=fixef(m1),theta=getME(m1,"theta"))
+lmeAddSigmafit <- list(fixef=fixef(m1),theta=getME(m1,"theta"))
 
 ## hack around slight naming differences
-lme4fit$theta <- unname(lme4fit$theta)
-lme4.0fit$theta <- unname(lme4.0fit$theta)
+lmeAddSigmafit$theta <- unname(lmeAddSigmafit$theta)
+lmeAddSigma.0fit$theta <- unname(lmeAddSigma.0fit$theta)
 ## difference in theta on x86_64-w64-mingw32 (64-bit) with r-devel is  0.000469576
-stopifnot(all.equal(lme4fit, lme4.0fit, tolerance = 5e-4))
+stopifnot(all.equal(lmeAddSigmafit, lmeAddSigma.0fit, tolerance = 5e-4))
 
 ## Fun stuff: visualize and alternative model
 

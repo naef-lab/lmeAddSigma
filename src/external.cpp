@@ -1,8 +1,8 @@
-// external.cpp: externally .Call'able functions in lme4
+// external.cpp: externally .Call'able functions in lmeAddSigma
 //
 // Copyright (C)       2011-2018 Douglas Bates, Martin Maechler and Ben Bolker
 //
-// This file is part of lme4.
+// This file is part of lmeAddSigma.
 
 #include <iomanip>
 #include "predModule.h"
@@ -35,11 +35,11 @@ extern "C" {
 
     using       glm::glmFamily;
 
-    using      lme4::glmResp;
-    using      lme4::lmResp;
-    using      lme4::lmerResp;
-    using      lme4::merPredD;
-    using      lme4::nlsResp;
+    using      lmeAddSigma::glmResp;
+    using      lmeAddSigma::lmResp;
+    using      lmeAddSigma::lmerResp;
+    using      lmeAddSigma::merPredD;
+    using      lmeAddSigma::nlsResp;
 
     using optimizer::Golden;
     using optimizer::Nelder_Mead;
@@ -1137,14 +1137,14 @@ static R_CallMethodDef CallEntries[] = {
     {NULL, NULL, 0}
 };
 
-/** Initializer for lme4, called upon loading the package.
+/** Initializer for lmeAddSigma, called upon loading the package.
  *
  *  Register routines that can be called directly from R.
  *  Initialize CHOLMOD and require the LL' form of the factorization.
  *  Install the symbols to be used by functions in the package.
  */
 extern "C"
-void R_init_lme4(DllInfo *dll)
+void R_init_lmeAddSigma(DllInfo *dll)
 {
     R_registerRoutines(dll, NULL, CallEntries, NULL, NULL);
     R_useDynamicSymbols(dll, (Rboolean)FALSE);

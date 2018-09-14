@@ -1,7 +1,7 @@
 ## test of false zero problem reported by Vince Dorie
-## (no longer occurs with current development lme4)
-## https://github.com/lme4/lme4/issues/17
-library(lme4)
+## (no longer occurs with current development lmeAddSigma)
+## https://github.com/lmeAddSigma/lmeAddSigma/issues/17
+library(lmeAddSigma)
 
 sigma.eps <- 2
 sigma.the <- 0.75
@@ -24,5 +24,5 @@ S.b <- n * sum((y.bar.j - y.bar)^2)
 R <- S.b / S.w
 
 sigma.the.hat <- sqrt(max((n - 1) * R / n - 1 / n, 0))
-stopifnot(all.equal(sigma.the.hat,lme4Sigma <- unname(getME(lmerFit,"theta")),
+stopifnot(all.equal(sigma.the.hat,lmeAddSigmaSigma <- unname(getME(lmerFit,"theta")),
                     tolerance=2e-5))

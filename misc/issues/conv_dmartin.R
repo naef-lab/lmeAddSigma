@@ -1,4 +1,4 @@
-## From http://stackoverflow.com/questions/21344555/convergence-error-for-development-version-of-lme4
+## From http://stackoverflow.com/questions/21344555/convergence-error-for-development-version-of-lmeAddSigma
 ## **tl;dr** this looks like a false positive -- I don't see any
 ## particularly important differences among the fits with a variety of
 ## different optimizers, although it looks as though the outliers are
@@ -15,7 +15,7 @@ source("convdat.R")
 ## bobyqa; nlminb and L-BFGS-B from base R, via the `optimx` package;
 ## and the `nloptr` versions of N-M and bobyqa.
 
-library(lme4)
+library(lmeAddSigma)
 g0.bobyqa <- glmer(resp ~ months.c * similarity * percSem +
                  (similarity | subj),
       family = binomial, data = myData,
@@ -28,7 +28,7 @@ g0.LBFGSB <- update(g0.bobyqa,control=glmerControl(optimizer="optimx",
                               optCtrl=list(method="L-BFGS-B")))
 
 library(nloptr)
-## from https://github.com/lme4/lme4/issues/98:
+## from https://github.com/lmeAddSigma/lmeAddSigma/issues/98:
 defaultControl <- list(algorithm="NLOPT_LN_BOBYQA",xtol_rel=1e-6,maxeval=1e5)
 nloptwrap2 <- function(fn,par,lower,upper,control=list(),...) {
     for (n in names(defaultControl)) 

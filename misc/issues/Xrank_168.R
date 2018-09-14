@@ -1,7 +1,7 @@
 ## Example from Rune's pull request:
-##>>> https://github.com/lme4/lme4/pull/144
+##>>> https://github.com/lmeAddSigma/lmeAddSigma/pull/144
 ## More "handling" in
-##>>> https://github.com/lme4/lme4/issues/168
+##>>> https://github.com/lmeAddSigma/lmeAddSigma/issues/168
 
 ## [Rune: ]
 ## I have updated relevant tests and added some tests related to `anova` on

@@ -1,4 +1,4 @@
-library(lme4)
+library(lmeAddSigma)
 library(testthat)
 fm1 <- lmer(Reaction ~ Days + (Days|Subject), sleepstudy)
 expect_equal(colnames(model.frame(fm1)),c("Reaction","Days","Subject"))

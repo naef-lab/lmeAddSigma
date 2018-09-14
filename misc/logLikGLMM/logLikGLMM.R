@@ -32,7 +32,7 @@
 ##
 ######################################################################
 
-library(lme4)
+library(lmeAddSigma)
 library(mvtnorm)
 
 ######################################################################
@@ -242,7 +242,7 @@ abline(h = dis, col = "blue", lty = 2)
 all.equal(deviance(gm), devianceCondRel(gm))
 all.equal(-2 * c(logLik(gm)) - 2, ## minus two is for the scale
                                   ## parameter (should include this in
-                                  ## lme4)
+                                  ## lmeAddSigma)
           devianceLaplace(gm))
 
 aic1 <- Gamma()$aic(getME(gm, "y"),

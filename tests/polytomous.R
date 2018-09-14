@@ -1,4 +1,4 @@
-library(lme4)
+library(lmeAddSigma)
 
  ## setup
  ## library(polytomous)
@@ -7,7 +7,7 @@ library(lme4)
  ##                                         data=think, heuristic="poisson.reformulation")
  ##   save("formula.poisson","data.poisson",file="polytomous_test.RData")
 
-load(system.file("testdata","polytomous_test.RData",package="lme4"))
+load(system.file("testdata","polytomous_test.RData",package="lmeAddSigma"))
 
 if (FALSE) {
     ## infinite loop
@@ -25,7 +25,7 @@ if (FALSE) {
     ## Error in pp$updateDecomp() : Downdated VtV is not positive definite
 }
 
-(testLevel <- lme4:::testLevel())
+(testLevel <- lmeAddSigma:::testLevel())
 if (testLevel > 2) {
     glmer(formula.poisson,data=data.poisson,family=poisson,
           control=glmerControl(compDev=FALSE),optimizer="bobyqa")

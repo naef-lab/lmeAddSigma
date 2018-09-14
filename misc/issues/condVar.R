@@ -1,5 +1,5 @@
-# presumably correct condVar's from lme4.0
-library(lme4.0)
+# presumably correct condVar's from lmeAddSigma.0
+library(lmeAddSigma.0)
 gm <- glmer(cbind(incidence, size - incidence) ~ period + (1 | herd),
               data = cbpp, family = binomial)
 as.numeric(attr(ranef(gm,postVar=TRUE)$herd,"postVar"))
@@ -12,8 +12,8 @@ as.numeric(attr(ranef(fm,postVar=TRUE)$Batch,"postVar"))
 ## [1] 362.3583 362.3583 362.3583 362.3583 362.3583 362.3583
 
 
-# but lme4 gets it wrong
-library(lme4)
+# but lmeAddSigma gets it wrong
+library(lmeAddSigma)
 
 gm <- glmer(cbind(incidence, size - incidence) ~ period + (1 | herd),
               data = cbpp, family = binomial)
@@ -26,7 +26,7 @@ fm <- lmer(Yield ~ 1|Batch, Dyestuff, REML=FALSE)
 as.numeric(attr(ranef(fm,condVar=TRUE)$Batch,"postVar"))
 ## [1] 94.55028 94.55028 94.55028 94.55028 94.55028 94.55028
 
-# pure R version with lme4 that closely matches lme4.0 behaviour
+# pure R version with lmeAddSigma that closely matches lmeAddSigma.0 behaviour
 s2.gm <- sigma(gm)^2
 Lamt.gm <- getME(gm,"Lambdat")
 UtU.gm <- tcrossprod(gm@pp$LamtUt)
@@ -35,7 +35,7 @@ UtUpI.gm <- UtU.gm + Diagonal(nrow(UtU.gm))
 ##  [1] 0.12125894 0.13358525 0.08837934 0.17331034 0.12273769 0.14430602
 ##  [7] 0.10656182 0.10308298 0.21279279 0.13734534 0.09553076 0.19451821
 ## [13] 0.14801431 0.12628487 0.15809627
-lme4:::condVar(gm)@x # with experimental function
+lmeAddSigma:::condVar(gm)@x # with experimental function
 ##  [1] 0.12125894 0.13358525 0.08837934 0.17331034 0.12273769 0.14430602
 ##  [7] 0.10656182 0.10308298 0.21279279 0.13734534 0.09553076 0.19451821
 ## [13] 0.14801431 0.12628487 0.15809627
@@ -53,7 +53,7 @@ UtUpI.fm <- UtU.fm + Diagonal(nrow(UtU.fm))
 ## [4,]   .        .        .      362.3113   .        .     
 ## [5,]   .        .        .        .      362.3113   .     
 ## [6,]   .        .        .        .        .      362.3113
-lme4:::condVar(fm) # with experimental function
+lmeAddSigma:::condVar(fm) # with experimental function
 ## 6 x 6 sparse Matrix of class "dgCMatrix"
                                                           
 ## [1,] 362.3113   .        .        .        .        .     
@@ -64,23 +64,23 @@ lme4:::condVar(fm) # with experimental function
 ## [6,]   .        .        .        .        .      362.3113
 
 
-# differences between lme4.0 and lme4 with more complex models.
+# differences between lmeAddSigma.0 and lmeAddSigma with more complex models.
 # these differences have to be due to the conditional variance
 # estimates, because all the other estimates are very similar.
 # do conditional variance estimates take uncertainty in fixed
 # effects into account? i didn't think so but now i'm wondering.
-library(lme4)
+library(lmeAddSigma)
 fm <- lmer(Reaction ~ Days + (Days | Subject), sleepstudy)
 attr(ranef(fm,condVar=TRUE)$Subject,"postVar")[,,1]
 ##           [,1]      [,2]
 ## [1,] 142.61353 -23.33522
 ## [2,] -23.33522   6.02113
-lme4:::condVar(fm)[1:2, 1:2] # experimental function
+lmeAddSigma:::condVar(fm)[1:2, 1:2] # experimental function
 ## 2 x 2 sparse Matrix of class "dgCMatrix"                        
 ## [1,] 145.70544 -21.44448
 ## [2,] -21.44448   5.31228
 
-library(lme4.0)
+library(lmeAddSigma.0)
 fm <- lmer(Reaction ~ Days + (Days | Subject), sleepstudy)
 attr(ranef(fm,postVar=TRUE)$Subject,"postVar")[,,1]
 ##           [,1]       [,2]

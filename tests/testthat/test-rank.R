@@ -1,5 +1,5 @@
 library("testthat")
-library("lme4")
+library("lmeAddSigma")
 
 context("testing fixed-effect design matrices for full rank")
 

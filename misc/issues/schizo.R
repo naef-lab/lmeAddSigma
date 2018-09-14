@@ -19,7 +19,7 @@ na.vals <- function(x,crit) {
 }
 library(plyr)  ## for mutate()
 library(MASS)  ## for glmmPQL
-library(lme4)
+library(lmeAddSigma)
 library(ggplot2); theme_set(theme_bw())
 dd <- mutate(dd0,
                 imps79=na.vals(imps79,imps79<0),
@@ -71,8 +71,8 @@ m6 <- MCMCglmm(imps79b~tx*sweek,
                family="categorical",verbose=FALSE)
 
 cbind(glm=coef(m0),glmmPQL_int=fixef(m1),
-      glmmPQL_slope=fixef(m2),lme4_int=fixef(m3),
-      lme4_slope=fixef(m4))
+      glmmPQL_slope=fixef(m2),lmeAddSigma_int=fixef(m3),
+      lmeAddSigma_slope=fixef(m4))
 
 library(coefplot2)
 coefplot2(list(glm=m0,PQL_int=m1,PQL_slope=m2,

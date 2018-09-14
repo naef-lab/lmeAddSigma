@@ -1,7 +1,7 @@
-## see if we can still run lme4 functions when lme4 is not attached
-if ("package:lme4" %in% search()) detach("package:lme4")
-data(sleepstudy,package="lme4")
-data(cbpp,package="lme4")
-fm1 <- lme4::lmer(Reaction ~ Days + (Days|Subject), sleepstudy)
-gm1 <- lme4::glmer(cbind(incidence, size - incidence) ~ period + (1 | herd),
+## see if we can still run lmeAddSigma functions when lmeAddSigma is not attached
+if ("package:lmeAddSigma" %in% search()) detach("package:lmeAddSigma")
+data(sleepstudy,package="lmeAddSigma")
+data(cbpp,package="lmeAddSigma")
+fm1 <- lmeAddSigma::lmer(Reaction ~ Days + (Days|Subject), sleepstudy)
+gm1 <- lmeAddSigma::glmer(cbind(incidence, size - incidence) ~ period + (1 | herd),
              data = cbpp, family = binomial)

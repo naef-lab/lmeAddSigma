@@ -3,22 +3,22 @@
 //
 // Copyright (C) 2011-2012 Douglas Bates, Martin Maechler and Ben Bolker
 //
-// This file is part of lme4.
+// This file is part of lmeAddSigma.
 
 #include "mcmcsamp.h"
 
-namespace lme4 {
+namespace lmeAddSigma {
     using Rcpp::as;
 
-    static inline double pwrss(lme4::merPredD *pred, lme4::lmResp *resp) {
+    static inline double pwrss(lmeAddSigma::merPredD *pred, lmeAddSigma::lmResp *resp) {
         return pred->sqrL(1.) + resp->wrss();
     }
 
-    static inline double sigmaML(lme4::merPredD *pred, lme4::lmResp *resp) {
+    static inline double sigmaML(lmeAddSigma::merPredD *pred, lmeAddSigma::lmResp *resp) {
         return std::sqrt(pwrss(pred, resp)/double(resp->y().size()));
     }
 
-    mcmcsamp::mcmcsamp(lme4::merPredD *pred, lme4::lmResp *resp,
+    mcmcsamp::mcmcsamp(lmeAddSigma::merPredD *pred, lmeAddSigma::lmResp *resp,
                        SEXP dev, SEXP fixef, SEXP sigma, SEXP ranef)
         : d_dev(  as<MVec>(dev)),
           d_fixef(as<MMat>(fixef)),
@@ -64,14 +64,14 @@ namespace lme4 {
  */
     SEXP mer_MCMCsamp(SEXP , SEXP fm)
     {
-        SEXP devsamp = GET_SLOT(x, lme4_devianceSym);
+        SEXP devsamp = GET_SLOT(x, lmeAddSigma_devianceSym);
         int *dims = DIMS_SLOT(x), nsamp = LENGTH(devsamp);
         int n = dims[n_POS], np = dims[np_POS],
             p = dims[p_POS], q = dims[q_POS];
         double
-            *STsamp = REAL(GET_SLOT(x, lme4_STSym)),
+            *STsamp = REAL(GET_SLOT(x, lmeAddSigma_STSym)),
             *d = DEV_SLOT(fm), *dev = REAL(devsamp),
-            *sig = SLOT_REAL_NULL(x, lme4_sigmaSym),
+            *sig = SLOT_REAL_NULL(x, lmeAddSigma_sigmaSym),
             *fixsamp = FIXEF_SLOT(x), *resamp = RANEF_SLOT(x);
 
         GetRNGstate();
@@ -162,7 +162,7 @@ namespace lme4 {
         int *nc = Alloca(nt, int), *nlev = Alloca(nt, int);
         R_CheckStack();
 
-        if (ST_nc_nlev(GET_SLOT(x, lme4_STSym), Gp, st, nc, nlev) < 2) return;
+        if (ST_nc_nlev(GET_SLOT(x, lmeAddSigma_STSym), Gp, st, nc, nlev) < 2) return;
         error("Code for non-trivial theta_T not yet written");
     }
 
@@ -189,7 +189,7 @@ namespace lme4 {
         double **st = Alloca(nt, double*);
         R_CheckStack();
 
-        ST_nc_nlev(GET_SLOT(x, lme4_STSym), Gp, st, nc, nlev);
+        ST_nc_nlev(GET_SLOT(x, lmeAddSigma_STSym), Gp, st, nc, nlev);
         ns = 0;                 /* ns is length(theta_S) */
         spt[0] = 0;                     /* pointers into ss for terms */
         for (int i = 0; i < nt; i++) {

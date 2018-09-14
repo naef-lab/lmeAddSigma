@@ -14,7 +14,7 @@ sigmaw0 <- 0.15  # within standard deviation
 
 dat <- sims(I, J, sigmab0, sigmaw0)
 
-library(lme4)
+library(lmeAddSigma)
 fm3 <- lmer(y ~ (1|group), data=dat)
 stopifnot(all.equal(unname(unlist(VarCorr(fm3))),
 		    if(fm3@optinfo$optimizer == "Nelder_Mead")

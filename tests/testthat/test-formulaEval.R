@@ -1,5 +1,5 @@
 library("testthat")
-library("lme4")
+library("lmeAddSigma")
 
 context("data= argument and formula evaluation")
 
@@ -170,7 +170,7 @@ test_that("lmerForm", {
     form <- as.formula(paste("y ~",paste(varChr,collapse="+"),
                              "+",
                              paste0("(",paste(rvars,collapse="+"),"|f)")))
-    ff <- lme4:::reOnly(form)
+    ff <- lmeAddSigma:::reOnly(form)
     environment(ff) <- .GlobalEnv
     expect_equal(ff,
      ~(varname_aa + varname_ba + varname_ca + varname_da + varname_ea +
@@ -204,7 +204,7 @@ test_that("missDataFun", {
                             control=lmerControl(optimizer=NULL))))
     g <- function(X) {
         X$y <- X$x1 + rnorm(10)[X$g] + rnorm(200000)
-        lme4:::missDataFun(X)
+        lmeAddSigma:::missDataFun(X)
     }
     ## should take < 1 second since deparsing is now skipped
     (t2 <- system.time(g(X)))

@@ -1,4 +1,4 @@
-library(lme4)
+library(lmeAddSigma)
 
 allEQ <- function(x,y, tolerance = 4e-4, ...)
     all.equal.numeric(x,y, tolerance=tolerance, ...)
@@ -7,7 +7,7 @@ allEQ <- function(x,y, tolerance = 4e-4, ...)
               Orange, start = c(Asym = 200, xmid = 725, scal = 350)))
 fixef(nm1)
 
-if (lme4:::testLevel() > 2) {
+if (lmeAddSigma:::testLevel() > 2) {
     ## 'Theoph' Data modeling
     Th.start <- c(lKe = -2.5, lKa = 0.5, lCl = -3)
 
