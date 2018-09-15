@@ -774,7 +774,7 @@ hasNoScale <- function(family)
 ##' @param rho the environment of the objective function
 ##' @param opt the value returned by the optimizer
 ##' @param reTrms reTrms list from the calling function
-mkMerMod <- function(rho, opt, reTrms, fr, mc, lmeAddSigmaconv=NULL) {
+mkMerMod <- function(rho, opt, reTrms, fr, mc, lmeAddSigmaconv=NULL, sigma0=0) {
     if(missing(mc)) mc <- match.call()
     stopifnot(is.environment(rho),
               is(pp <- rho$pp, "merPredD"),
@@ -827,6 +827,7 @@ mkMerMod <- function(rho, opt, reTrms, fr, mc, lmeAddSigmaconv=NULL) {
     }
     #sigmaML <- pwrss/sum(weights)
     sigmaML <- pwrss/n
+    sigma0 <- sigma0  # pwrss is penalized by some sigma0, record it here JY/FN 2018-09-15
     if (rcl != "lmerResp") {
         pars <- opt$par
         if (length(pars) > length(pp$theta)) beta <- pars[-(seq_along(pp$theta))]
@@ -839,6 +840,7 @@ mkMerMod <- function(rho, opt, reTrms, fr, mc, lmeAddSigmaconv=NULL) {
              ## FIXME: construct 'REML deviance' here?
              dev=if (rcl=="lmerResp" && resp$REML != 0L || trivial.y) NA else opt$fval,
              sigmaML=sqrt(unname(if (!dims["useSc"] || trivial.y) NA else sigmaML)),
+	     sigma0=sigma0,
              sigmaREML=sqrt(unname(if (rcl!="lmerResp" || trivial.y) NA else
                                    sigmaML*(dims['n']/dims['nmp']))),
              tolPwrss=rho$tolPwrss)

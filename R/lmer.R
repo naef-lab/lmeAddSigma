@@ -61,7 +61,7 @@ lmer <- function(formula, data=NULL, REML = TRUE,
                     ctrl = control$checkConv,
                     lbound=environment(devfun)$lower)
     mkMerMod(environment(devfun), opt, lmod$reTrms, fr = lmod$fr,
-             mc = mcout, lmeAddSigmaconv=cc) ## prepare output
+             mc = mcout, lmeAddSigmaconv=cc, sigma0=sigma0) ## prepare output, include sigma0 JY 2018-09-15
 }## { lmer }
 
 
