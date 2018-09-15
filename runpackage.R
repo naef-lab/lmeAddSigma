@@ -18,7 +18,9 @@ library(lmeAddSigma)
 # Functions ---------------------------------------------------------------
 
 w <- 2 * pi / 24
-source("/home/yeung/projects/machine_learning_playground/scripts/functions/LmmFunctions.R")
+
+
+source("LmmFunctions.R")
 # Load data ---------------------------------------------------------------
 
 dat <- readMat("/data/shared/ZonationAnalysis/Data/data.mat")
@@ -46,8 +48,7 @@ dat.long$cospart <- GetCosPart(dat.long$time)
 dat.long$sinpart <- GetSinPart(dat.long$time)
 
 dat.gene <- subset(dat.long, gene == "pck1")
-# dat.gene$exprs_scaled <- scale(dat.gene$exprs, center = TRUE, scale = TRUE)
-# dat.gene$timechar <- paste("T", dat.gene$time, sep = "_")
+
 
 # mouse-specific intercept only... does ZxR capture the noise from zone effect?
 
