@@ -172,7 +172,11 @@ merPredD <-
                     initializePtr = function() {
                         Ptr <<- .Call(merPredDCreate, as(X, "matrix"), Lambdat,
                                       LamtUt, Lind, RZX, Ut, Utr, V, VtV, Vtr,
-                                      Xwts, Zt, beta0, delb, delu, theta, u0)
+                                      Xwts, Zt, beta0, delb, delu, theta, u0,
+				      sigma0)   # JY/FN 2018-09-14
+		    print(paste("Setting sigma0 to", sigma0))
+                        .Call(merPredDsetSigma0, Ptr, sigma0)  # JY/FN 2018=09-14
+		    print(paste("Setting theta to", theta))
                         .Call(merPredDsetTheta, Ptr, theta)
                         .Call(merPredDupdateXwts, Ptr, Xwts)
                         .Call(merPredDupdateDecomp, Ptr, NULL)
@@ -191,6 +195,11 @@ merPredD <-
                      setTheta     = function(theta) {
                          'install a new value of theta'
                          .Call(merPredDsetTheta, ptr(), as.numeric(theta))
+                     },
+		     #  JY/FN not sure if necessary 2018-09-14
+                     setSigma0     = function(sigma0) {
+                         'install a new value of sigma0'
+                         .Call(merPredDsetSigma0, ptr(), as.numeric(theta))
                      },
                      setZt        = function(ZtNonZero) {
                          'install new values in Zt'
@@ -258,17 +267,18 @@ lmResp <-                               # base class for response modules
                      sqrtrwt = "numeric",
                      weights = "numeric",
                      wtres   = "numeric",
-                     y       = "numeric"),
+                     y       = "numeric",
+		     sigma0  = "numeric"),  # JY/FN 2018-09-14
                 methods =
                 list(
                     allInfo = function() {
                         'return all the information available on the object'
                         data.frame(y=y, offset=offset, weights=weights, mu=mu,
-                                   rwt=sqrtrwt, wres=wtres, Xwt=sqrtXwt)
+                                   rwt=sqrtrwt, wres=wtres, Xwt=sqrtXwt, sigma0=sigma0)
                     },
                     initialize = function(...) {
                         if (!nargs()) return()
-                        ll <- list(...)
+                        ll <- list(...)  # should contain sigma0 JY/FN 2018-09-15
                         if (is.null(ll$y)) stop("y must be specified")
                         y <<- as.numeric(ll$y)
                         n <- length(y)
@@ -283,6 +293,7 @@ lmResp <-                               # base class for response modules
                         sqrtrwt <<- if (!is.null(ll$sqrtrwt))
                             as.numeric(ll$sqrtrwt) else sqrt(weights)
                         wtres   <<- sqrtrwt * (y - mu)
+			sigma0 <<- ll$sigma0  # JY/FN 2018-09-14
                     },
                     copy         = function(shallow = FALSE) {
                         def <- .refClassDef
@@ -303,7 +314,7 @@ lmResp <-                               # base class for response modules
                     },
                     initializePtr = function() {
                         Ptr <<- .Call(lm_Create, y, weights, offset, mu, sqrtXwt,
-                                      sqrtrwt, wtres)
+                                      sqrtrwt, wtres, sigma0)
                         .Call(lm_updateMu, Ptr, mu)
                     },
                     ptr       = function() {
@@ -348,7 +359,7 @@ lmerResp <-
                      },
                      initializePtr = function() {
                          Ptr <<- .Call(lmer_Create, y, weights, offset, mu, sqrtXwt,
-                                       sqrtrwt, wtres)
+                                       sqrtrwt, wtres, sigma0)
                          .Call(lm_updateMu, Ptr, mu - offset)
                          .Call(lmer_setREML, Ptr, REML)
                      },

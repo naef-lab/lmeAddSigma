@@ -233,7 +233,7 @@ mkReTrms <- function(bars, fr, drop.unused.levels=TRUE,
 ##' @return an lmerResp or glmResp or nlsResp instance
 ##' @family utilities
 ##' @export
-mkRespMod <- function(fr, REML=NULL, family = NULL, nlenv = NULL, nlmod = NULL, ...)
+mkRespMod <- function(fr, REML=NULL, family = NULL, nlenv = NULL, nlmod = NULL, sigma0=0, ...)
 {
     if(!missing(fr)) {
         y <- model.response(fr)
@@ -277,6 +277,7 @@ mkRespMod <- function(fr, REML=NULL, family = NULL, nlenv = NULL, nlmod = NULL, 
     }
 
     rho <- new.env()
+    rho$sigma0 <- sigma0  # JY/FN 2018-09-15
     rho$y <- if (is.null(y)) numeric(0) else y
     if (!is.null(REML)) rho$REML <- REML
     rho$etastart <- etastart_update

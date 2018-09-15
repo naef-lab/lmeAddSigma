@@ -80,12 +80,12 @@ extern "C" {
 
 
     // generalized linear model (and generalized linear mixed model) response
-
+    // Add sigma0 JY/FN 2018-09-15
     SEXP glm_Create(SEXP fam, SEXP y, SEXP weights, SEXP offset, SEXP mu,
-                    SEXP sqrtXwt, SEXP sqrtrwt, SEXP wtres, SEXP eta, SEXP n) {
+                    SEXP sqrtXwt, SEXP sqrtrwt, SEXP wtres, SEXP eta, SEXP n, SEXP sigma0) {
         BEGIN_RCPP;
         glmResp *ans = new glmResp(List(fam), y, weights, offset, mu,
-                                   sqrtXwt, sqrtrwt, wtres, eta, n);
+                                   sqrtXwt, sqrtrwt, wtres, eta, n, sigma0);
         return wrap(XPtr<glmResp>(ans, true));
         END_RCPP;
     }
@@ -555,9 +555,9 @@ extern "C" {
     // linear model response (also the base class for other response classes)
 
     SEXP lm_Create(SEXP y, SEXP weights, SEXP offset, SEXP mu,
-                   SEXP sqrtXwt, SEXP sqrtrwt, SEXP wtres) {
+                   SEXP sqrtXwt, SEXP sqrtrwt, SEXP wtres, SEXP sigma0) {
         BEGIN_RCPP;
-        lmResp *ans = new lmResp(y, weights, offset, mu, sqrtXwt, sqrtrwt, wtres);
+        lmResp *ans = new lmResp(y, weights, offset, mu, sqrtXwt, sqrtrwt, wtres, sigma0);  // JY/FN 2018-09-14
         return wrap(XPtr<lmResp>(ans, true));
         END_RCPP;
     }
@@ -595,9 +595,9 @@ extern "C" {
     // linear mixed-effects model response
 
     SEXP lmer_Create(SEXP y, SEXP weights, SEXP offset, SEXP mu,
-                     SEXP sqrtXwt, SEXP sqrtrwt, SEXP wtres) {
+                     SEXP sqrtXwt, SEXP sqrtrwt, SEXP wtres, SEXP sigma0) {
         BEGIN_RCPP;
-        lmerResp *ans = new lmerResp(y, weights, offset, mu, sqrtXwt, sqrtrwt, wtres);
+        lmerResp *ans = new lmerResp(y, weights, offset, mu, sqrtXwt, sqrtrwt, wtres, sigma0);
         return wrap(XPtr<lmerResp>(ans, true));
         END_RCPP;
     }
@@ -670,13 +670,14 @@ extern "C" {
 
     // dense predictor module for mixed-effects models
 
+    // Add sigma0 here JY/FN 2018-09-14
     SEXP merPredDCreate(SEXP Xs, SEXP Lambdat, SEXP LamtUt, SEXP Lind,
                         SEXP RZX, SEXP Ut, SEXP Utr, SEXP V, SEXP VtV,
                         SEXP Vtr, SEXP Xwts, SEXP Zt, SEXP beta0,
-                        SEXP delb, SEXP delu, SEXP theta, SEXP u0) {
+                        SEXP delb, SEXP delu, SEXP theta, SEXP u0, SEXP sigma0) {
         BEGIN_RCPP;
         merPredD *ans = new merPredD(Xs, Lambdat, LamtUt, Lind, RZX, Ut, Utr, V, VtV,
-                                     Vtr, Xwts, Zt, beta0, delb, delu, theta, u0);
+                                     Vtr, Xwts, Zt, beta0, delb, delu, theta, u0, sigma0);
         return wrap(XPtr<merPredD>(ans, true));
         END_RCPP;
     }
@@ -686,6 +687,13 @@ extern "C" {
         BEGIN_RCPP;
         XPtr<merPredD>(ptr)->setTheta(as<MVec>(theta));
         return theta;
+        END_RCPP;
+    }
+
+    SEXP merPredDsetSigma0(SEXP ptr, SEXP sigma0) {
+        BEGIN_RCPP;
+        XPtr<merPredD>(ptr)->setSigma0(as<MVec>(sigma0));
+        return sigma0;
         END_RCPP;
     }
 
@@ -947,11 +955,12 @@ extern "C" {
 
     // nonlinear model response (also the base class for other response classes)
 
+    // Add sigma0 JY/FN 2018-09-15
     SEXP nls_Create(SEXP y, SEXP weights, SEXP offset, SEXP mu, SEXP sqrtXwt,
-                    SEXP sqrtrwt, SEXP wtres, SEXP gamma, SEXP mod, SEXP env, SEXP pnms) {
+                    SEXP sqrtrwt, SEXP wtres, SEXP gamma, SEXP mod, SEXP env, SEXP pnms, SEXP sigma0) {
         BEGIN_RCPP;
         nlsResp *ans =
-            new nlsResp(y, weights, offset, mu, sqrtXwt, sqrtrwt, wtres, gamma, mod, env, pnms);
+            new nlsResp(y, weights, offset, mu, sqrtXwt, sqrtrwt, wtres, gamma, mod, env, pnms, sigma0);
         return wrap(XPtr<nlsResp>(ans, true));
         END_RCPP;
     }
@@ -1072,7 +1081,7 @@ static R_CallMethodDef CallEntries[] = {
 
     CALLDEF(lm_updateMu,        2), // method
 
-    CALLDEF(lmer_Create,        7), // generate external pointer
+    CALLDEF(lmer_Create,        8), // generate external pointer. 7 -> 8 after sigma0 JY 2018-09-15
 
     CALLDEF(lmer_setREML,       2), // setter
 
@@ -1080,9 +1089,10 @@ static R_CallMethodDef CallEntries[] = {
     CALLDEF(lmer_Laplace,       5),
     CALLDEF(lmer_opt1,          4),
 
-    CALLDEF(merPredDCreate,    17), // generate external pointer
+    CALLDEF(merPredDCreate,    18), // generate external pointer. 18 because we added sigma0 JY/FN 2018-09-14
 
     CALLDEF(merPredDsetTheta,   2), // setters
+    CALLDEF(merPredDsetSigma0,   2), // setters  JY/FN 2018-09-14
     CALLDEF(merPredDsetZt,      2), 
     CALLDEF(merPredDsetBeta0,   2), 
 

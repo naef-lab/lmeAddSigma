@@ -5,15 +5,15 @@
 # lmeAddSigma implementation notes
 # http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.205.1072&rep=rep1&type=pdf
 
-rm(list=ls())
+# rm(list=ls())
 
-lapply(paste('package:',names(sessionInfo()$otherPkgs),sep=""),detach,character.only=TRUE,unload=TRUE)
+# lapply(paste('package:',names(sessionInfo()$otherPkgs),sep=""),detach,character.only=TRUE,unload=TRUE)
 
-library(devtools)
+# library(devtools)
 library(dplyr)
 library(R.matlab)
 # dev_mode(T)  # does not interfere with other installed packages
-# install_local("/home/yeung/projects/lmeAddSigmasigma")
+# install_local("/home/yeung/projects/lmeAddSigma")
 # install_local("/home/yeung/projects/lmeAddSigmapureR")
 
 library(lmeAddSigma)
@@ -51,9 +51,16 @@ dat.long$cospart <- GetCosPart(dat.long$time)
 dat.long$sinpart <- GetSinPart(dat.long$time)
 
 dat.gene <- subset(dat.long, gene == "pck1")
-dat.gene$exprs_scaled <- scale(dat.gene$exprs, center = TRUE, scale = TRUE)
-dat.gene$timechar <- paste("T", dat.gene$time, sep = "_")
+# dat.gene$exprs_scaled <- scale(dat.gene$exprs, center = TRUE, scale = TRUE)
+# dat.gene$timechar <- paste("T", dat.gene$time, sep = "_")
 
 # mouse-specific intercept only... does ZxR capture the noise from zone effect?
-lme.ZxR <- lmeAddSigmasigma::lmer(exprs ~ 1 + (1 | mouse) + cospart + sinpart + zone + I(zone ^ 2) + zone : timechar, data = dat.gene, REML = FALSE)
+rm(lme.ZxR)
+
+# sigmaML = 0.1216292 if sigma=0, pwrss=1.1834938
+# sigmaML = 0.2936362 if sigma=0, pwrss=6.8977795
+lme.ZxR <- lmeAddSigma::lmer(exprs ~ 1 + (1 | mouse) + cospart + sinpart + zone + I(zone ^ 2) + zone : cospart + zone : sinpart,
+                             data = dat.gene, REML = FALSE, sigma0=0)
+print(lme.ZxR@devcomp)
 # lme.ZxR.orig <- lmeAddSigma::lmer(exprs ~ 1 + (1 | mouse) + cospart + sinpart + zone + I(zone ^ 2) + zone : timechar, data = dat.gene, REML = FALSE)
+

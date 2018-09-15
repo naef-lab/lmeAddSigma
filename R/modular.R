@@ -494,6 +494,8 @@ updateStart <- function(start,theta) {
 mkLmerDevfun <- function(fr, X, reTrms, REML = TRUE, start = NULL,
                          verbose = 0, control = lmerControl(), sigma0=0, ...)
 {
+    ## fr is model matrix?
+
     ## FIXME: make sure verbose gets handled properly
     #if (missing(fr)) {
     ## reconstitute frame
@@ -510,10 +512,11 @@ mkLmerDevfun <- function(fr, X, reTrms, REML = TRUE, start = NULL,
     # print(paste("JY sigma from rho", rho$pp$sigma0))
     # print(paste("Set sigma0 to new sigma0", rho$pp$sigma0))
     REMLpass <- if(REML) p else 0L
+    # inputs for RespMod are fr?
     rho$resp <-
         if(missing(fr))
-             mkRespMod(    REML = REMLpass, ...)
-        else mkRespMod(fr, REML = REMLpass)
+             mkRespMod(    REML = REMLpass, sigma0 = sigma0...)
+        else mkRespMod(fr, REML = REMLpass, sigma0 = sigma0)
     ## FIXME / note: REML does double duty as rank of X and a flag for using
     ## REML maybe this should be mentioned in the help file for
     ## mkRespMod??  currently that help file says REML is logical.  a

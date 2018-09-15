@@ -38,8 +38,6 @@ lmer <- function(formula, data=NULL, REML = TRUE,
     devfun <- do.call(mkLmerDevfun,
                       c(lmod,
                         list(start=start, verbose=verbose, control=control, sigma0=sigma0)))
-    print("JY my devfun")
-    print(devfun)
     if (devFunOnly) return(devfun)
     ## optimize deviance function over covariance parameters
     if (identical(control$optimizer,"none"))

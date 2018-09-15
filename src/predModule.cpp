@@ -22,7 +22,8 @@ namespace lmeAddSigma {
     merPredD::merPredD(SEXP X, SEXP Lambdat, SEXP LamtUt, SEXP Lind,
                        SEXP RZX, SEXP Ut, SEXP Utr, SEXP V, SEXP VtV,
                        SEXP Vtr, SEXP Xwts, SEXP Zt, SEXP beta0,
-                       SEXP delb, SEXP delu, SEXP theta, SEXP u0)
+                       SEXP delb, SEXP delu, SEXP theta, SEXP u0,
+                       SEXP sigma0)  // JY/FN 2018-09-14
         : d_X(       as<MMat>(X)),
           d_RZX(     as<MMat>(RZX)),
           d_V(       as<MMat>(V)),
@@ -39,6 +40,7 @@ namespace lmeAddSigma {
           d_delb(    as<MVec>(delb)),
           d_delu(    as<MVec>(delu)),
           d_u0(      as<MVec>(u0)),
+          d_sigma0(  as<MVec>(sigma0)),
           d_Lind(    as<MiVec>(Lind)),
           d_N(       d_X.rows()),
           d_p(       d_X.cols()),
@@ -155,7 +157,6 @@ namespace lmeAddSigma {
     }
 
     void merPredD::setTheta(const VectorXd& theta) {
-
         if (theta.size() != d_theta.size()) {
             Rcpp::Rcout << "(" << theta.size() << "!=" <<
                 d_theta.size() << ")" << std::endl;
@@ -173,6 +174,19 @@ namespace lmeAddSigma {
         for (int i = 0; i < d_Lind.size(); ++i) {
             LamX[i] = thpt[lipt[i] - 1];
         }
+	// Rcpp::Rcout << "thetasize" << theta.size() << "d_thetasize" << d_theta.size() << 
+	// 	"theta" << theta.data() << "dtheta" << d_theta.data()  << std::endl;
+    }
+    
+    void merPredD::setSigma0(const VectorXd& sigma0) {
+        // update sigma0
+        // std::copy(sigma0.data(), sigma0.data() + sigma0.size(), 
+        //           d_sigma0.data());
+	Rcpp::Rcout << "AFTER: sigma0size\n" << sigma0.size() << "\nd_sigma0size\n" << d_sigma0.size() << 
+		"\nsigma0\n" << sigma0 << "\ndsigma0\n" << d_sigma0 << std::endl;
+	d_sigma0 = sigma0;
+	Rcpp::Rcout << "AFTER: sigma0size\n" << sigma0.size() << "\nd_sigma0size\n" << d_sigma0.size() << 
+		"\nsigma0\n" << sigma0 << "\ndsigma0\n" << d_sigma0 << std::endl;
     }
 
     void merPredD::setZt(const VectorXd& ZtNonZero) {

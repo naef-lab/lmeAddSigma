@@ -21,13 +21,14 @@ namespace lmeAddSigma {
     typedef Eigen::Map<VectorXd>  MVec;
 
     lmResp::lmResp(SEXP y, SEXP weights, SEXP offset, SEXP mu, SEXP sqrtXwt,
-                   SEXP sqrtrwt, SEXP wtres)
+                   SEXP sqrtrwt, SEXP wtres, SEXP sigma0)  // Include sigma0
         : d_y(      as<MVec>(y)),
           d_weights(as<MVec>(weights)),
           d_offset( as<MVec>(offset)),
           d_mu(     as<MVec>(mu)),
           d_sqrtXwt(as<MVec>(sqrtXwt)),
           d_sqrtrwt(as<MVec>(sqrtrwt)),
+          d_sigma0(as<double>(sigma0)),
           d_wtres(  as<MVec>(wtres)) {
         updateWrss();
         d_ldW = d_weights.array().log().sum();
@@ -54,8 +55,18 @@ namespace lmeAddSigma {
      * @return Updated weighted residual sum of squares
      */
     double lmResp::updateWrss() {
+	int debug=1;
         d_wtres = d_sqrtrwt.cwiseProduct(d_y - d_mu);
+	/**
+	 * 2018-09-14 JY/FN adjust sigmaML by sigmaML + sigma0. Do this by adding n*sigma0^2 to RSS
+	 * How much does adding d_sigma0 here result in the final sigmaML? 
+	 */
         d_wrss  = d_wtres.squaredNorm();
+	d_wrss += d_y.size() * d_sigma0 * d_sigma0;
+        if (debug) Rcpp::Rcout << "dy size: " <<
+                       d_y.size() <<
+                       " d_sigma0 " << d_sigma0 <<
+                       std::endl;
         return d_wrss;
     }
 
@@ -86,8 +97,8 @@ namespace lmeAddSigma {
     }
 
     lmerResp::lmerResp(SEXP y, SEXP weights, SEXP offset, SEXP mu,
-                       SEXP sqrtXwt, SEXP sqrtrwt, SEXP wtres)
-        : lmResp(y, weights, offset, mu, sqrtXwt, sqrtrwt, wtres),
+                       SEXP sqrtXwt, SEXP sqrtrwt, SEXP wtres, SEXP sigma0)
+        : lmResp(y, weights, offset, mu, sqrtXwt, sqrtrwt, wtres, sigma0),  // JY/FN 2018-09-14
           d_reml(0) {
     }
 
@@ -114,8 +125,8 @@ namespace lmeAddSigma {
     }
     
     glmResp::glmResp(List fam, SEXP y, SEXP weights, SEXP offset,
-                     SEXP mu, SEXP sqrtXwt, SEXP sqrtrwt, SEXP wtres, SEXP eta, SEXP n)
-        : lmResp(y, weights, offset, mu, sqrtXwt, sqrtrwt, wtres),
+                     SEXP mu, SEXP sqrtXwt, SEXP sqrtrwt, SEXP wtres, SEXP eta, SEXP n, SEXP sigma0)
+        : lmResp(y, weights, offset, mu, sqrtXwt, sqrtrwt, wtres, sigma0),
           d_fam(fam),
           d_eta(as<MVec>(eta)),
           d_n(as<MVec>(n)) {
@@ -190,8 +201,8 @@ namespace lmeAddSigma {
 
     nlsResp::nlsResp(SEXP y, SEXP weights, SEXP offset, SEXP mu, SEXP sqrtXwt,
                      SEXP sqrtrwt, SEXP wtres, SEXP gamma, SEXP mm, SEXP ee,
-                     SEXP pp)
-        : lmResp(y, weights, offset, mu, sqrtXwt, sqrtrwt, wtres),
+                     SEXP pp, SEXP sigma0)
+        : lmResp(y, weights, offset, mu, sqrtXwt, sqrtrwt, wtres, sigma0),
           d_gamma(as<MVec>(gamma)),
           d_nlenv(as<Environment>(ee)),
           d_nlmod(as<Language>(mm)),

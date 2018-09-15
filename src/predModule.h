@@ -33,7 +33,7 @@ namespace lmeAddSigma {
     protected:
         MMap          d_X, d_RZX, d_V, d_VtV;
         MSpMatrixd    d_Zt, d_Ut, d_LamtUt, d_Lambdat;
-        MVec          d_theta, d_Vtr, d_Utr, d_Xwts, d_beta0, d_delb, d_delu, d_u0;
+        MVec          d_theta, d_Vtr, d_Utr, d_Xwts, d_beta0, d_delb, d_delu, d_u0, d_sigma0;  // add sigma0 JY/FN 2018-09-14
         MiVec         d_Lind;
         Index         d_N, d_p, d_q;
         Scalar        d_CcNumer, d_ldL2, d_ldRX2;
@@ -41,7 +41,7 @@ namespace lmeAddSigma {
         LLT<MatrixXd> d_RX;
     public:
         merPredD(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, 
-                 SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
+                 SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);  // add one for sigma0 JY/FN 2018-09-14
 
         VectorXi             Pvec() const;
 
@@ -81,6 +81,7 @@ namespace lmeAddSigma {
         const MVec&          delu() const {return d_delu;}
         const MVec&         beta0() const {return d_beta0;}
         const MVec&         theta() const {return d_theta;}
+        const MVec&         sigma0() const {return d_sigma0;}  // JY/FN 2018-09-14 not sure if needed
         const MVec&            u0() const {return d_u0;}
         const MVec&          Xwts() const {return d_Xwts;}
 
@@ -92,6 +93,7 @@ namespace lmeAddSigma {
         void              setDelb(const VectorXd&);
         void              setDelu(const VectorXd&);
         void             setTheta(const VectorXd&);
+        void             setSigma0(const VectorXd&);  // JY/FN 2018-09-14
         void                setZt(const VectorXd&);
         void                setU0(const VectorXd&);
         void         updateDecomp();

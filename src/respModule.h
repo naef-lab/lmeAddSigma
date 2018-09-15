@@ -24,9 +24,10 @@ namespace lmeAddSigma {
     class lmResp {
     protected:
         double d_wrss, /**< current weighted sum of squared residuals */
-            d_ldW;     /**< sum of log prior weights (i.e. log determinant of 
+            d_ldW,     /**< sum of log prior weights (i.e. log determinant of 
                         * the diagonal weights matrix) */
-        MVec d_y,      /**< response vector */
+            d_sigma0; /**< JY/FN 2018-09-14 */
+            MVec d_y,      /**< response vector */
             d_weights, /**< prior weights - always present even if unity */
             d_offset,  /**< offset in the model */
             d_mu,      /**< mean response from current linear predictor */
@@ -38,7 +39,8 @@ namespace lmeAddSigma {
             d_sqrtrwt,    /**< Square roots of the residual weights */
             d_wtres;      /**< Current weighted residuals */
     public:
-        lmResp(SEXP,SEXP,SEXP,SEXP,SEXP,SEXP,SEXP);
+        lmResp(SEXP,SEXP,SEXP,SEXP,SEXP,SEXP,SEXP,
+			SEXP);  // Add one more JY/FN 2018-09-14
 
         const MVec&    sqrtXwt() const {return d_sqrtXwt;}
                                 /**< return a const reference to d_sqrtXwt */
@@ -76,7 +78,7 @@ namespace lmeAddSigma {
         int d_reml;             /**< 0 for evaluating the deviance, p
                                  * for evaluating the REML criterion. */
     public:
-        lmerResp(SEXP,SEXP,SEXP,SEXP,SEXP,SEXP,SEXP);
+        lmerResp(SEXP,SEXP,SEXP,SEXP,SEXP,SEXP,SEXP,SEXP);  // Add one more JY/FN 2018-09-14
 
         double         Laplace(double,double,double) const;
   double         Laplace(double,double,double,double) const;
@@ -89,7 +91,8 @@ namespace lmeAddSigma {
         glmFamily  d_fam;
         MVec       d_eta, d_n;
     public:
-        glmResp(Rcpp::List,SEXP,SEXP,SEXP,SEXP,SEXP,SEXP,SEXP,SEXP,SEXP);
+        glmResp(Rcpp::List,SEXP,SEXP,SEXP,SEXP,SEXP,SEXP,SEXP,SEXP,SEXP,
+                SEXP);  // Add sigma0 JY/FN 2018-09-15
 
         Eigen::ArrayXd   devResid() const;
         Eigen::ArrayXd      muEta() const;
@@ -125,7 +128,8 @@ namespace lmeAddSigma {
         Language        d_nlmod;
         CharacterVector d_pnames;
     public:
-        nlsResp(SEXP,SEXP,SEXP,SEXP,SEXP,SEXP,SEXP,SEXP,SEXP,SEXP,SEXP);
+        nlsResp(SEXP,SEXP,SEXP,SEXP,SEXP,SEXP,SEXP,SEXP,SEXP,SEXP,SEXP,
+                SEXP);  // Add sigma0 JY/FN 2018-09-15
 
         double            Laplace(double, double, double) const;
         double           updateMu(const Eigen::VectorXd&);
