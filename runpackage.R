@@ -9,16 +9,11 @@
 
 # lapply(paste('package:',names(sessionInfo()$otherPkgs),sep=""),detach,character.only=TRUE,unload=TRUE)
 
-# library(devtools)
 library(dplyr)
 library(R.matlab)
-# dev_mode(T)  # does not interfere with other installed packages
 # install_local("/home/yeung/projects/lmeAddSigma")
-# install_local("/home/yeung/projects/lmeAddSigmapureR")
 
 library(lmeAddSigma)
-# library(lmeAddSigmapureR)
-
 
 # Functions ---------------------------------------------------------------
 
@@ -55,12 +50,29 @@ dat.gene <- subset(dat.long, gene == "pck1")
 # dat.gene$timechar <- paste("T", dat.gene$time, sep = "_")
 
 # mouse-specific intercept only... does ZxR capture the noise from zone effect?
-rm(lme.ZxR)
 
 # sigmaML = 0.1216292 if sigma=0, pwrss=1.1834938
 # sigmaML = 0.2936362 if sigma=0, pwrss=6.8977795
-lme.ZxR <- lmeAddSigma::lmer(exprs ~ 1 + (1 | mouse) + cospart + sinpart + zone + I(zone ^ 2) + zone : cospart + zone : sinpart,
+lme.ZxR.normal <- lmeAddSigma::lmer(exprs ~ 1 + (1 | mouse) + cospart + sinpart + zone + I(zone ^ 2) + zone : cospart + zone : sinpart,
                              data = dat.gene, REML = FALSE, sigma0=0)
-print(lme.ZxR@devcomp)
-# lme.ZxR.orig <- lmeAddSigma::lmer(exprs ~ 1 + (1 | mouse) + cospart + sinpart + zone + I(zone ^ 2) + zone : timechar, data = dat.gene, REML = FALSE)
+lme.ZxR.orig <- lme4::lmer(exprs ~ 1 + (1 | mouse) + cospart + sinpart + zone + I(zone ^ 2) + zone : cospart + zone : sinpart,
+                             data = dat.gene, REML = FALSE)
+lme.ZxR.regularized <- lmeAddSigma::lmer(exprs ~ 1 + (1 | mouse) + cospart + sinpart + zone + I(zone ^ 2) + zone : cospart + zone : sinpart,
+                             data = dat.gene, REML = FALSE, sigma0=0.25)
+print(lme.ZxR.normal@devcomp)
+print(lme.ZxR.orig@devcomp)
+print(lme.ZxR.regularized@devcomp)
+
+# difference in sigma:
+print(sigma(lme.ZxR.regularized) - sigma(lme.ZxR.normal))
+
+# do model selection using regularlized sigma
+lme.ZR.regularized <- lmeAddSigma::lmer(exprs ~ 1 + (1 | mouse) + cospart + sinpart + zone + I(zone ^ 2),
+                                         data = dat.gene, REML = FALSE, sigma0=0.25)
+lme.ZR.normal <- lmeAddSigma::lmer(exprs ~ 1 + (1 | mouse) + cospart + sinpart + zone + I(zone ^ 2),
+                                         data = dat.gene, REML = FALSE, sigma0=0)
+
+
+print(lapply(list(lme.ZR.regularized, lme.ZxR.regularized), function(x) summary(x)$AICtab))  # ZR favored
+print(lapply(list(lme.ZR.normal, lme.ZxR.normal), function(x) summary(x)$AICtab))  # ZxR favored
 
